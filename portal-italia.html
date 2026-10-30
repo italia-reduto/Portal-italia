@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Portal Itália - LABORATÓRIO</title>
+    <title>Portal Itália</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             background: radial-gradient(circle at center, #0f291b 0%, #050a07 100%);
             color: white;
@@ -18,24 +19,36 @@
         }
 
         .fundo-luz {
-            position: absolute; width: 100%; height: 100%;
+            position: absolute;
+            width: 100%;
+            height: 100%;
             background: radial-gradient(circle at center, rgba(34, 197, 94, 0.2) 0%, transparent 70%);
             z-index: 0;
         }
 
-        /* IMAGEM DO BONECO */
+        /* =========================================
+           IMAGEM DO BONECO (Com suas medidas)
+           ========================================= */
         .boneco-img {
             position: absolute;
             z-index: 1;
             object-fit: contain;
             filter: drop-shadow(0 0 40px rgba(34, 197, 94, 0.4));
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            height: 100vh;
+            
+            /* Medidas exatas que você achou */
+            height: 91vh;
+            top: 67%;
+            left: 88%;
+            transform: translate(-50%, -50%); 
+            
+            /* Tenta forçar o celular a renderizar em alta qualidade */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: auto;
         }
 
-        /* TEXTOS NA ESQUERDA */
+        /* =========================================
+           TEXTOS NA ESQUERDA
+           ========================================= */
         .area-texto {
             position: absolute;
             top: 50%;
@@ -79,62 +92,23 @@
             border: 1px solid rgba(34, 197, 94, 0.5);
             border-radius: 8px;
             box-shadow: 0 8px 32px rgba(34, 197, 94, 0.3);
-            pointer-events: auto;
+            transition: all 0.3s ease;
         }
 
-        /* PAINEL DE CONTROLE (AGORA NO MEIO DA TELA) */
-        .painel-controle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%); /* Centraliza perfeitamente */
-            background: rgba(5, 10, 7, 0.95); /* Fundo quase preto pra não confundir */
-            border: 2px solid #22c55e;
-            padding: 20px;
-            border-radius: 12px;
-            z-index: 9999; /* Fica por cima de tudo */
-            width: 85%;
-            max-width: 350px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+        .botao-entrar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.6);
+            background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
         }
-        
-        .controle-linha {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .controle-linha label { 
-            font-size: 14px; 
-            font-weight: bold; 
-            color: #86efac; 
-        }
-        
-        .controle-linha input[type="range"] { 
-            width: 100%; 
-            height: 25px; /* Aumentei a área de toque */
-        }
-        
-        .controle-linha span { 
-            font-size: 16px; 
-            font-weight: bold; 
-            color: #fff; 
-            text-align: center; 
-            background: #166534;
-            padding: 2px;
-            border-radius: 4px;
-        }
+
     </style>
 </head>
 <body>
 
     <div class="fundo-luz"></div>
 
-    <!-- A Imagem -->
-    <img src="ei_1793336030505-removebg-preview.png" id="boneco" class="boneco-img">
+    <!-- A Imagem Posicionada -->
+    <img src="ei_1793336030505-removebg-preview.png" alt="Personagem" class="boneco-img">
 
     <!-- Textos e Botão na Esquerda -->
     <div class="area-texto">
@@ -143,39 +117,5 @@
         <a href="login.html" class="botao-entrar">ACESSAR O SISTEMA</a>
     </div>
 
-    <!-- PAINEL DE CONTROLE NO MEIO -->
-    <div class="painel-controle">
-        <div class="controle-linha">
-            <label>Tamanho: <span id="val-tamanho">100</span></label>
-            <input type="range" id="slider-tamanho" min="50" max="250" value="100" oninput="mudarTamanho(this.value)">
-        </div>
-        <div class="controle-linha">
-            <label>Altura (Y): <span id="val-y">50</span></label>
-            <input type="range" id="slider-y" min="-50" max="150" value="50" oninput="mudarPosicaoY(this.value)">
-        </div>
-        <div class="controle-linha">
-            <label>Lado (X): <span id="val-x">50</span></label>
-            <input type="range" id="slider-x" min="-50" max="150" value="50" oninput="mudarPosicaoX(this.value)">
-        </div>
-    </div>
-
-    <script>
-        const boneco = document.getElementById('boneco');
-
-        function mudarTamanho(valor) {
-            document.getElementById('val-tamanho').innerText = valor;
-            boneco.style.height = valor + 'vh';
-        }
-
-        function mudarPosicaoY(valor) {
-            document.getElementById('val-y').innerText = valor;
-            boneco.style.top = valor + '%';
-        }
-
-        function mudarPosicaoX(valor) {
-            document.getElementById('val-x').innerText = valor;
-            boneco.style.left = valor + '%';
-        }
-    </script>
 </body>
 </html>
