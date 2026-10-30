@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- AQUI ESTÁ A MÁGICA DA BARRA DO CHROME -->
+    <meta name="theme-color" content="#050a07">
+    
     <title>Portal Itália | Whitelist</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        <!-- Força o Chrome no celular a usar o tema escuro -->
-<meta name="theme-color" content="#0a0f0d">
-<meta name="color-scheme" content="dark">
         :root {
             --verde-neon: #22c55e;
             --fundo-principal: #0a0f0d; 
@@ -32,7 +33,6 @@
             position: relative;
         }
 
-        /* FUNDO DEGRADÊ */
         .fundo-degrade {
             position: fixed;
             inset: 0;
@@ -43,7 +43,6 @@
             z-index: 0;
         }
 
-        /* GRADE TÁTICA */
         .grade-fundo {
             position: fixed;
             inset: 0;
@@ -56,9 +55,6 @@
             -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
         }
 
-        /* =========================================
-           PARTÍCULAS ANIMADAS (Efeito de Fundo Vivo)
-           ========================================= */
         .particulas {
             position: fixed;
             inset: 0;
@@ -77,7 +73,6 @@
             animation: subir linear infinite;
         }
 
-        /* Criando as partículas com tamanhos, posições e tempos diferentes */
         .p1 { width: 3px; height: 3px; left: 10%; animation-duration: 6s; animation-delay: 0s; }
         .p2 { width: 4px; height: 4px; left: 30%; animation-duration: 8s; animation-delay: 2s; }
         .p3 { width: 2px; height: 2px; left: 50%; animation-duration: 5s; animation-delay: 1s; }
@@ -93,9 +88,6 @@
             100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
 
-        /* =========================================
-           PAINEL HUD
-           ========================================= */
         .painel-hud {
             position: relative;
             z-index: 10;
@@ -181,7 +173,6 @@
             margin-bottom: 30px;
         }
 
-        /* BOTÃO PRINCIPAL */
         .btn-principal {
             position: relative;
             display: flex;
@@ -200,7 +191,7 @@
             transition: 0.4s;
             overflow: hidden;
             cursor: pointer;
-            margin-bottom: 15px; /* Espaço para o link de registro */
+            margin-bottom: 15px; 
         }
 
         .btn-principal::before {
@@ -216,7 +207,6 @@
         .btn-principal:hover::before, .btn-principal:active::before { left: 0; }
         .btn-principal:hover, .btn-principal:active { border-color: var(--verde-neon); color: #000; font-weight: 700; padding-left: 25px; }
 
-        /* LINK DE REGISTRO (OPÇÃO 1) */
         .link-registro {
             display: block;
             text-align: center;
@@ -232,11 +222,8 @@
             cursor: pointer;
         }
 
-        .link-registro:hover strong {
-            text-decoration: underline;
-        }
+        .link-registro:hover strong { text-decoration: underline; }
 
-        /* ÁREA DE REDES SOCIAIS */
         .redes-sociais {
             display: flex;
             justify-content: center;
@@ -282,7 +269,6 @@
     <div class="fundo-degrade"></div>
     <div class="grade-fundo"></div>
 
-    <!-- PARTÍCULAS DE FUNDO -->
     <div class="particulas">
         <div class="particula p1"></div>
         <div class="particula p2"></div>
@@ -309,18 +295,15 @@
             Acesse a central de comando oficial. Gerencie sua equipe, registre seu ponto e acompanhe sua evolução na organização.
         </p>
 
-        <!-- Botão Principal -->
         <a href="login.html" class="btn-principal">
             Acessar Sistema
             <i class="fas fa-chevron-right"></i>
         </a>
 
-        <!-- Link de Registro (Opção 1) -->
         <a href="registro.html" class="link-registro">
             Ainda não tem acesso? <strong>Faça sua Whitelist aqui</strong>
         </a>
 
-        <!-- Redes Sociais -->
         <div class="redes-sociais">
             <a href="LINK_DO_SEU_DISCORD" target="_blank" class="btn-social discord">
                 <i class="fab fa-discord"></i>
