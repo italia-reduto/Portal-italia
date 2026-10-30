@@ -282,34 +282,68 @@
     const btn = document.getElementById('btn-entrar');
     const erroEl = document.getElementById('msg-erro');
 
-    btn.disabled = true;
-    btn.querySelector('span').innerText = 'Testando...';
-    erroEl.innerText = "Buscando conexão com o banco...";
-    erroEl.style.display = 'block';
-    erroEl.style.color = 'white';
+    if (!passaporte || !senha) {
+        erroEl.innerText = 'Preencha o passaporte e a senha.';
+        erroEl.classList.add('ativa');
+        return;
+    }
 
-    // TESTE BRUTO: Puxar os primeiros 3 membros da tabela, sem filtro nenhum
-    const { data, error } = await sb.from('membros').select('*').limit(3);
+    btn.disabled = true;
+    btn.querySelector('span').innerText = 'Autenticando...';
+    erroEl.classList.remove('ativa');
+
+    // Puxa todos os membros (seguro para uma facção pequena/média)
+    const { data, error } = await sb.from('membros').select('*');
 
     if (error) {
-        erroEl.innerText = "ERRO DO SUPABASE: " + error.message;
+        erroEl.innerText = 'Erro de conexão com o banco.';
+        erroEl.classList.add('ativa');
         btn.disabled = false;
         btn.querySelector('span').innerText = 'Entrar no Sistema';
         return;
     }
 
-    if (!data || data.length === 0) {
-        erroEl.innerText = "CONECTOU, MAS A TABELA ESTÁ VAZIA (O RLS pode estar bloqueando).";
+    // Procura o membro na lista
+    const membroEncontrado = data.find(m => String(m.passaporte).trim() === String(passaporte).trim());
+
+    if (!membroEncontrado) {
+        erroEl.innerText = 'Passaporte não encontrado no sistema.';
+        erroEl.classList.add('ativa');
         btn.disabled = false;
         btn.querySelector('span').innerText = 'Entrar no Sistema';
         return;
     }
 
-    // Se chegou aqui, ele leu os dados. Vamos ver o que tem dentro:
-    erroEl.innerText = "LEITURA OK! Achei " + data.length + " membros. O primeiro é o passaporte: " + data[0].passaporte;
+    // Verifica a senha
+    if (String(membroEncontrado.senha_credencial).trim() !== String(senha).trim()) {
+        erroEl.innerText = 'Senha incorreta. Tente novamente.';
+        erroEl.classList.add('ativa');
+        btn.disabled = false;
+        btn.querySelector('span').innerText = 'Entrar no Sistema';
+        return;
+    }
+
+    // Login OK — salva sessão
+    sessionStorage.setItem('membro_logado', JSON.stringify({
+        nome: membroEncontrado.nome,
+        passaporte: membroEncontrado.passaporte,
+        cargo: membroEncontrado.cargo
+    }));
+
+    const CARGOS_LIDERANCA = ['Líder da organização', '01 da organização', 'Coordenador', 'Gerente geral', 'Gerente'];
+    const ehLideranca = CARGOS_LIDERANCA.includes(membroEncontrado.cargo);
     
-    btn.disabled = false;
-    btn.querySelector('span').innerText = 'Entrar no Sistema';
+    btn.querySelector('span').innerText = 'Bem-vindo!';
+    btn.style.background = '#166534';
+    btn.style.color = '#86efac';
+
+    setTimeout(() => {
+        if (ehLideranca) {
+            window.location.href = 'admin-whitelist.html';
+        } else {
+            window.location.href = 'dashboard.html';
+        }
+    }, 900);
         }
     </script>
 </body>
