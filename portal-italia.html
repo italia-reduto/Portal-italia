@@ -14,6 +14,7 @@
             color: white;
             font-family: 'Inter', sans-serif;
             height: 100vh;
+            width: 100vw;
             overflow: hidden;
             position: relative;
         }
@@ -27,57 +28,60 @@
             z-index: 0;
         }
 
+        /* =========================================
+           CONTAINER DO BONECO (FIXO NA DIREITA)
+           ========================================= */
         .container-boneco {
-    position: absolute;
-    bottom: 0; /* Cola no chão */
-    right: -5vw; /* Cola na direita e dá uma leve vazada pra fora pra ficar estiloso */
-    height: 90vh; /* Altura do boneco (pode aumentar pra 100vh se quiser ele gigante) */
-    width: auto; /* Deixa a largura automática para não achatar */
-    z-index: 1;
-    pointer-events: none; 
-    display: flex;
-    justify-content: flex-end;
-}
+            position: absolute;
+            bottom: 0;       /* Cola no chão */
+            right: 0;        /* Cola na direita */
+            height: 85vh;    /* Altura do boneco (85% da tela) */
+            width: 60vw;     /* Largura limite para não cobrir o texto */
+            z-index: 1;
+            pointer-events: none;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+        }
 
-/* A Imagem */
-.boneco-img {
-    height: 100%;
-    width: auto;
-    max-width: none; /* Impede o navegador de tentar "espremer" a imagem */
-    object-fit: contain;
-    object-position: bottom right;
-    filter: drop-shadow(0 0 30px rgba(34, 197, 94, 0.4));
-    animation: flutuar 4s ease-in-out infinite;
-}
+        .boneco-img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;         /* Não estica a imagem */
+            object-position: bottom right; /* Ancora no canto inferior direito */
+            filter: drop-shadow(0 0 30px rgba(34, 197, 94, 0.3));
+            animation: flutuar 5s ease-in-out infinite; /* Animação de respiração */
+        }
 
-        /* Textos e Botão - Agora na esquerda */
+        /* =========================================
+           TEXTOS E BOTÃO (NA ESQUERDA)
+           ========================================= */
         .area-texto {
             position: absolute;
             top: 50%;
-            left: 24px;
+            left: 30px; /* Distância da borda esquerda */
             transform: translateY(-50%);
             z-index: 10;
-            max-width: 250px; /* Limita a largura para não encostar no boneco */
+            max-width: 220px; /* Garante que o texto não invada a imagem */
         }
 
         .titulo-principal {
-            font-size: 52px;
+            font-size: 50px;
             font-weight: 900;
             letter-spacing: 2px;
             line-height: 1.1;
             text-transform: uppercase;
-            /* Degradê Verde e Branco */
             background: linear-gradient(180deg, #ffffff 0%, #22c55e 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
             opacity: 0;
-            transform: translateX(-20px); /* Animação vindo da esquerda */
+            transform: translateX(-20px);
             animation: aparecer 1s 0.3s forwards;
         }
 
         .subtitulo {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: #86efac;
             letter-spacing: 2px;
@@ -88,11 +92,10 @@
             animation: aparecer 1s 0.6s forwards;
         }
 
-        /* Botão Verde */
         .botao-entrar {
             display: inline-block;
-            padding: 16px 32px;
-            font-size: 15px;
+            padding: 15px 30px;
+            font-size: 14px;
             font-weight: 700;
             color: #fff;
             text-decoration: none;
@@ -120,7 +123,7 @@
 
         @keyframes flutuar {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
     </style>
@@ -129,7 +132,7 @@
 
     <div class="fundo-luz"></div>
 
-    <!-- Texto na Esquerda -->
+    <!-- Textos na Esquerda -->
     <div class="area-texto">
         <h1 class="titulo-principal">Portal<br>Itália</h1>
         <p class="subtitulo">Sua jornada começa aqui</p>
@@ -138,8 +141,8 @@
 
     <!-- Boneco na Direita -->
     <div class="container-boneco">
-        <!-- SUBSTITUA PELO NOME DA SUA IMAGEM -->
-        <img src="ei_1793336030505-removebg-preview.png" alt="Personagem Itália" class="boneco-img">
+        <!-- SUBSTITUA O NOME DO ARQUIVO SE NECESSÁRIO -->
+        <img src="boneco.png" alt="Personagem" class="boneco-img">
     </div>
 
 </body>
