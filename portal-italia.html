@@ -9,7 +9,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            /* Fundo verde escuro */
             background: radial-gradient(circle at center, #0f291b 0%, #050a07 100%);
             color: white;
             font-family: 'Inter', sans-serif;
@@ -19,24 +18,23 @@
             position: relative;
         }
 
-        /* Luz verde suave no fundo */
         .fundo-luz {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 70% 80%, rgba(34, 197, 94, 0.15) 0%, transparent 60%);
+            background: radial-gradient(circle at 70% 80%, rgba(34, 197, 94, 0.2) 0%, transparent 60%);
             z-index: 0;
         }
 
         /* =========================================
-           CONTAINER DO BONECO (FIXO NA DIREITA)
+           CONTAINER DO BONECO (TAMANHO GIGANTE)
            ========================================= */
         .container-boneco {
             position: absolute;
-            bottom: 0;       /* Cola no chão */
-            right: 0;        /* Cola na direita */
-            height: 85vh;    /* Altura do boneco (85% da tela) */
-            width: 60vw;     /* Largura limite para não cobrir o texto */
+            bottom: 0;       
+            right: -15vw;    /* Joga um pouco pra fora da tela pra dar enquadramento */
+            height: 100vh;   /* Altura total da tela */
+            width: 100vw;    /* Largura total */
             z-index: 1;
             pointer-events: none;
             display: flex;
@@ -45,28 +43,34 @@
         }
 
         .boneco-img {
-            height: 100%;
-            width: 100%;
-            object-fit: contain;         /* Não estica a imagem */
-            object-position: bottom right; /* Ancora no canto inferior direito */
-            filter: drop-shadow(0 0 30px rgba(34, 197, 94, 0.3));
-            animation: flutuar 5s ease-in-out infinite; /* Animação de respiração */
+            height: 95%; 
+            width: auto;
+            max-width: none; /* Impede o celular de diminuir a imagem */
+            object-fit: contain;         
+            object-position: bottom right; 
+            
+            /* A MÁGICA AQUI: O scale(1.4) aumenta a imagem em 40% */
+            transform: scale(1.4); 
+            transform-origin: bottom right; /* O zoom puxa a partir do canto inferior direito */
+            
+            filter: drop-shadow(0 0 40px rgba(34, 197, 94, 0.4));
+            animation: flutuar 5s ease-in-out infinite;
         }
 
         /* =========================================
-           TEXTOS E BOTÃO (NA ESQUERDA)
+           TEXTOS E BOTÃO
            ========================================= */
         .area-texto {
             position: absolute;
-            top: 50%;
-            left: 30px; /* Distância da borda esquerda */
+            top: 45%;
+            left: 25px; 
             transform: translateY(-50%);
             z-index: 10;
-            max-width: 220px; /* Garante que o texto não invada a imagem */
+            max-width: 200px; 
         }
 
         .titulo-principal {
-            font-size: 50px;
+            font-size: 48px;
             font-weight: 900;
             letter-spacing: 2px;
             line-height: 1.1;
@@ -81,12 +85,12 @@
         }
 
         .subtitulo {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: #86efac;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             opacity: 0;
             transform: translateX(-20px);
             animation: aparecer 1s 0.6s forwards;
@@ -94,7 +98,7 @@
 
         .botao-entrar {
             display: inline-block;
-            padding: 15px 30px;
+            padding: 15px 25px;
             font-size: 14px;
             font-weight: 700;
             color: #fff;
@@ -116,15 +120,14 @@
             background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
         }
 
-        /* Animações */
         @keyframes aparecer {
             to { opacity: 1; transform: translateX(0); }
         }
 
         @keyframes flutuar {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+            0% { transform: scale(1.4) translateY(0px); }
+            50% { transform: scale(1.4) translateY(-15px); }
+            100% { transform: scale(1.4) translateY(0px); }
         }
     </style>
 </head>
@@ -132,16 +135,14 @@
 
     <div class="fundo-luz"></div>
 
-    <!-- Textos na Esquerda -->
     <div class="area-texto">
         <h1 class="titulo-principal">Portal<br>Itália</h1>
         <p class="subtitulo">Sua jornada começa aqui</p>
         <a href="login.html" class="botao-entrar">ACESSAR O SISTEMA</a>
     </div>
 
-    <!-- Boneco na Direita -->
     <div class="container-boneco">
-        <!-- SUBSTITUA O NOME DO ARQUIVO SE NECESSÁRIO -->
+        <!-- LEMBRE-SE DE COLOCAR O NOME EXATO DA SUA IMAGEM AQUI -->
         <img src="ei_1793336030505-removebg-preview.png" alt="Personagem" class="boneco-img">
     </div>
 
