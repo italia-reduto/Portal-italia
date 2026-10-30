@@ -5,116 +5,193 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Portal Itália</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body {
-            background: radial-gradient(circle at center, #0f291b 0%, #050a07 100%);
+        /* A MÁGICA PARA O PULL-TO-REFRESH DO CHROME */
+        html, body {
+            background-color: #050a07;
             color: white;
             font-family: 'Inter', sans-serif;
-            height: 100vh;
+            min-height: 100vh; /* Permite que a página seja maior que a tela se precisar */
             width: 100vw;
-            overflow: hidden;
-            position: relative;
+            overflow-x: hidden; 
+            overflow-y: auto; /* Permite a rolagem/atualização nativa */
+            overscroll-behavior-y: auto; /* Garante o efeito de puxar do Chrome */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        .fundo-luz {
-            position: absolute;
+        /* O container das formas tem o overflow hidden para não bugar a tela */
+        .fundo-formas {
+            position: fixed;
+            top: 0; left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, rgba(34, 197, 94, 0.2) 0%, transparent 70%);
-            z-index: 0;
+            z-index: -1;
+            overflow: hidden; 
+            pointer-events: none;
         }
 
-        /* =========================================
-           IMAGEM DO BONECO (Com suas medidas)
-           ========================================= */
-        .boneco-img {
+        .circulo-verde {
             position: absolute;
-            z-index: 1;
-            object-fit: contain;
-            filter: drop-shadow(0 0 40px rgba(34, 197, 94, 0.4));
-            
-            /* Medidas exatas que você achou */
-            height: 91vh;
-            top: 67%;
-            left: 88%;
-            transform: translate(-50%, -50%); 
-            
-            /* Tenta forçar o celular a renderizar em alta qualidade */
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: auto;
+            border-radius: 50%;
+            filter: blur(80px);
         }
 
-        /* =========================================
-           TEXTOS NA ESQUERDA
-           ========================================= */
-        .area-texto {
-            position: absolute;
-            top: 50%;
-            left: 25px; 
-            transform: translateY(-50%);
+        .circulo-1 {
+            width: 300px; height: 300px;
+            background: rgba(34, 197, 94, 0.25);
+            top: -50px; left: -50px;
+            animation: flutuar-lento 10s infinite alternate;
+        }
+
+        .circulo-2 {
+            width: 400px; height: 400px;
+            background: rgba(22, 101, 52, 0.3);
+            bottom: -100px; right: -100px;
+            animation: flutuar-lento 8s infinite alternate-reverse;
+        }
+
+        /* O Cartão de Vidro */
+        .card-vidro {
+            position: relative;
             z-index: 10;
-            width: 55vw;
-            text-shadow: 0px 4px 15px rgba(0,0,0,0.9);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin: 40px 0; /* Margem extra para dar espaço pro gesto */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: aparecer 1s forwards;
         }
 
-        .titulo-principal {
-            font-size: 48px;
+        .status-online {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #4ade80;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .bolinha-verde {
+            width: 8px; height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #22c55e;
+            animation: piscar 2s infinite;
+        }
+
+        .logo-area { margin-bottom: 30px; }
+
+        .titulo {
+            font-size: 38px;
             font-weight: 900;
             letter-spacing: 2px;
             line-height: 1.1;
             text-transform: uppercase;
-            background: linear-gradient(180deg, #ffffff 0%, #22c55e 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #4ade80 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
         }
 
         .subtitulo {
             font-size: 12px;
             font-weight: 700;
             color: #86efac;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 35px;
+            margin-top: 5px;
         }
 
         .botao-entrar {
-            display: inline-block;
-            padding: 15px 25px;
-            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            font-size: 15px;
             font-weight: 700;
-            color: #fff;
+            color: #ffffff;
             text-decoration: none;
-            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             background: linear-gradient(135deg, #166534 0%, #22c55e 100%);
-            border: 1px solid rgba(34, 197, 94, 0.5);
-            border-radius: 8px;
-            box-shadow: 0 8px 32px rgba(34, 197, 94, 0.3);
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(34, 197, 94, 0.5);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .botao-entrar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(34, 197, 94, 0.7);
             background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
         }
 
+        .rodape {
+            position: relative;
+            z-index: 10;
+            font-size: 11px;
+            color: #64748b;
+            text-align: center;
+            width: 100%;
+            padding-bottom: 20px;
+        }
+
+        @keyframes aparecer { to { opacity: 1; transform: translateY(0); } }
+        @keyframes piscar { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes flutuar-lento { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
     </style>
 </head>
 <body>
 
-    <div class="fundo-luz"></div>
+    <!-- Formas de fundo -->
+    <div class="fundo-formas">
+        <div class="circulo-verde circulo-1"></div>
+        <div class="circulo-verde circulo-2"></div>
+    </div>
 
-    <!-- A Imagem Posicionada -->
-    <img src="ei_1793336030505-removebg-preview.png" alt="Personagem" class="boneco-img">
+    <!-- O Cartão Central -->
+    <div class="card-vidro">
+        <div class="status-online">
+            <div class="bolinha-verde"></div>
+            Servidor Online
+        </div>
 
-    <!-- Textos e Botão na Esquerda -->
-    <div class="area-texto">
-        <h1 class="titulo-principal">Portal<br>Itália</h1>
-        <p class="subtitulo">Sua jornada começa aqui</p>
-        <a href="login.html" class="botao-entrar">ACESSAR O SISTEMA</a>
+        <div class="logo-area">
+            <h1 class="titulo">Portal<br>Itália</h1>
+            <p class="subtitulo">Sua jornada começa aqui</p>
+        </div>
+
+        <a href="login.html" class="botao-entrar">
+            <i class="fas fa-sign-in-alt"></i>
+            Acessar o Sistema
+        </a>
+    </div>
+
+    <div class="rodape">
+        &copy; 2026 Organização Itália · Todos os direitos reservados
     </div>
 
 </body>
