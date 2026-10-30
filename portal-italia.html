@@ -22,51 +22,43 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 70% 80%, rgba(34, 197, 94, 0.2) 0%, transparent 60%);
+            background: radial-gradient(circle at 70% 50%, rgba(34, 197, 94, 0.2) 0%, transparent 60%);
             z-index: 0;
         }
 
-        /* =========================================
-           CONTAINER DO BONECO (TAMANHO GIGANTE)
-           ========================================= */
+        /* CONTAINER DO BONECO (CENTRALIZADO NA DIREITA) */
         .container-boneco {
             position: absolute;
-            bottom: 0;       
-            right: -15vw;    /* Joga um pouco pra fora da tela pra dar enquadramento */
-            height: 100vh;   /* Altura total da tela */
-            width: 100vw;    /* Largura total */
+            top: 50%;
+            right: -10vw;
+            transform: translateY(-50%);
+            height: 85vh;
+            width: 70vw;
             z-index: 1;
             pointer-events: none;
             display: flex;
             justify-content: flex-end;
-            align-items: flex-end;
+            align-items: center;
         }
 
         .boneco-img {
-            height: 95%; 
+            height: 100%;
             width: auto;
-            max-width: none; /* Impede o celular de diminuir a imagem */
+            max-width: none; 
             object-fit: contain;         
-            object-position: bottom right; 
-            
-            /* A MÁGICA AQUI: O scale(1.4) aumenta a imagem em 40% */
-            transform: scale(1.4); 
-            transform-origin: bottom right; /* O zoom puxa a partir do canto inferior direito */
-            
+            object-position: center right; 
             filter: drop-shadow(0 0 40px rgba(34, 197, 94, 0.4));
             animation: flutuar 5s ease-in-out infinite;
         }
 
-        /* =========================================
-           TEXTOS E BOTÃO
-           ========================================= */
+        /* TEXTOS E BOTÃO */
         .area-texto {
             position: absolute;
-            top: 45%;
+            top: 50%;
             left: 25px; 
             transform: translateY(-50%);
             z-index: 10;
-            max-width: 200px; 
+            width: 55vw;
         }
 
         .titulo-principal {
@@ -85,12 +77,12 @@
         }
 
         .subtitulo {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
             color: #86efac;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             opacity: 0;
             transform: translateX(-20px);
             animation: aparecer 1s 0.6s forwards;
@@ -125,9 +117,9 @@
         }
 
         @keyframes flutuar {
-            0% { transform: scale(1.4) translateY(0px); }
-            50% { transform: scale(1.4) translateY(-15px); }
-            100% { transform: scale(1.4) translateY(0px); }
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
         }
     </style>
 </head>
@@ -142,7 +134,7 @@
     </div>
 
     <div class="container-boneco">
-        <!-- LEMBRE-SE DE COLOCAR O NOME EXATO DA SUA IMAGEM AQUI -->
+        <!-- Imagem configurada com o nome exato que você mandou -->
         <img src="ei_1793336030505-removebg-preview.png" alt="Personagem" class="boneco-img">
     </div>
 
