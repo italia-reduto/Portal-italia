@@ -3,195 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Portal Itália</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Portal Itália | Whitelist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        /* A MÁGICA PARA O PULL-TO-REFRESH DO CHROME */
-        html, body {
-            background-color: #050a07;
-            color: white;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh; /* Permite que a página seja maior que a tela se precisar */
-            width: 100vw;
-            overflow-x: hidden; 
-            overflow-y: auto; /* Permite a rolagem/atualização nativa */
-            overscroll-behavior-y: auto; /* Garante o efeito de puxar do Chrome */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        :root {
+            --verde-neon: #22c55e;
+            --verde-escuro: #052e16;
+            --fundo: #050505;
+            --texto-secundario: #a1a1aa;
         }
 
-        /* O container das formas tem o overflow hidden para não bugar a tela */
-        .fundo-formas {
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Permite atualizar puxando a tela (Pull-to-refresh) */
+        html, body {
+            background-color: var(--fundo);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+            overflow-y: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Grade Tática de Fundo */
+        .grade-fundo {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden; 
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(34, 197, 94, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34, 197, 94, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            /* Faz a grade sumir suavemente nas bordas */
+            mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
+        }
+
+        /* Brilho Verde no fundo */
+        .brilho-fundo {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw; height: 80vw;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, transparent 60%);
+            z-index: 0;
             pointer-events: none;
         }
 
-        .circulo-verde {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-        }
-
-        .circulo-1 {
-            width: 300px; height: 300px;
-            background: rgba(34, 197, 94, 0.25);
-            top: -50px; left: -50px;
-            animation: flutuar-lento 10s infinite alternate;
-        }
-
-        .circulo-2 {
-            width: 400px; height: 400px;
-            background: rgba(22, 101, 52, 0.3);
-            bottom: -100px; right: -100px;
-            animation: flutuar-lento 8s infinite alternate-reverse;
-        }
-
-        /* O Cartão de Vidro */
-        .card-vidro {
+        /* =========================================
+           O PAINEL PRINCIPAL (Estilo HUD)
+           ========================================= */
+        .painel-hud {
             position: relative;
             z-index: 10;
             width: 90%;
             max-width: 400px;
-            background: rgba(15, 23, 42, 0.5);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px 30px;
-            text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            margin: 40px 0; /* Margem extra para dar espaço pro gesto */
-            opacity: 0;
-            transform: translateY(20px);
-            animation: aparecer 1s forwards;
+            padding: 40px 25px;
+            background: rgba(5, 5, 5, 0.8);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(34, 197, 94, 0.05);
         }
 
-        .status-online {
+        /* Cantos do Painel HUD (Aquelas linhas táticas) */
+        .painel-hud::before, .painel-hud::after {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            border: 2px solid var(--verde-neon);
+            transition: 0.3s;
+        }
+        .painel-hud::before {
+            top: -1px; left: -1px;
+            border-right: none; border-bottom: none;
+        }
+        .painel-hud::after {
+            bottom: -1px; right: -1px;
+            border-left: none; border-top: none;
+        }
+
+        /* Tag de Status */
+        .tag-status {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-left: 3px solid var(--verde-neon);
             padding: 6px 12px;
-            border-radius: 20px;
+            font-family: 'Oswald', sans-serif;
             font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #86efac;
+            margin-bottom: 25px;
+        }
+        .tag-status span {
+            width: 6px; height: 6px;
+            background: var(--verde-neon);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--verde-neon);
+            animation: piscar 1.5s infinite;
+        }
+
+        /* Título Principal */
+        .titulo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 52px;
             font-weight: 700;
-            color: #4ade80;
+            line-height: 0.9;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 20px;
-        }
-
-        .bolinha-verde {
-            width: 8px; height: 8px;
-            background-color: #22c55e;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #22c55e;
-            animation: piscar 2s infinite;
-        }
-
-        .logo-area { margin-bottom: 30px; }
-
-        .titulo {
-            font-size: 38px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            line-height: 1.1;
-            text-transform: uppercase;
-            background: linear-gradient(180deg, #ffffff 0%, #4ade80 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
         }
-
-        .subtitulo {
-            font-size: 12px;
-            font-weight: 700;
-            color: #86efac;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+        
+        .titulo span {
+            display: block;
+            color: var(--verde-neon);
+            -webkit-text-fill-color: var(--verde-neon);
+            font-size: 22px;
+            letter-spacing: 5px;
             margin-top: 5px;
+            text-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
         }
 
-        .botao-entrar {
+        /* Linha Divisória */
+        .divisoria {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--verde-neon) 0%, transparent 100%);
+            margin: 20px 0;
+            opacity: 0.3;
+        }
+
+        .descricao {
+            font-size: 13px;
+            color: var(--texto-secundario);
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        /* Botão Premium com Animação */
+        .botao {
+            position: relative;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
+            justify-content: space-between;
             width: 100%;
-            padding: 16px;
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
+            padding: 16px 20px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
             text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            font-size: 15px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, #166534 0%, #22c55e 100%);
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px -5px rgba(34, 197, 94, 0.5);
-            transition: all 0.3s ease;
+            letter-spacing: 2px;
+            transition: 0.4s;
+            overflow: hidden;
             cursor: pointer;
         }
 
-        .botao-entrar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px -5px rgba(34, 197, 94, 0.7);
-            background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
+        /* Efeito de fundo que preenche o botão ao passar o dedo */
+        .botao::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: var(--verde-neon);
+            transition: 0.4s;
+            z-index: -1;
+        }
+
+        .botao:hover::before, .botao:active::before {
+            left: 0;
+        }
+
+        .botao:hover, .botao:active {
+            border-color: var(--verde-neon);
+            color: #000;
+            font-weight: 700;
+            padding-left: 25px; /* Efeito de movimento */
+        }
+
+        .botao i {
+            font-size: 18px;
         }
 
         .rodape {
-            position: relative;
-            z-index: 10;
-            font-size: 11px;
-            color: #64748b;
+            position: absolute;
+            bottom: 15px;
             text-align: center;
-            width: 100%;
-            padding-bottom: 20px;
+            font-size: 10px;
+            color: #3f3f46;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            z-index: 10;
         }
 
-        @keyframes aparecer { to { opacity: 1; transform: translateY(0); } }
-        @keyframes piscar { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        @keyframes flutuar-lento { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
+        /* Animação de piscar */
+        @keyframes piscar {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Formas de fundo -->
-    <div class="fundo-formas">
-        <div class="circulo-verde circulo-1"></div>
-        <div class="circulo-verde circulo-2"></div>
-    </div>
+    <div class="grade-fundo"></div>
+    <div class="brilho-fundo"></div>
 
-    <!-- O Cartão Central -->
-    <div class="card-vidro">
-        <div class="status-online">
-            <div class="bolinha-verde"></div>
-            Servidor Online
+    <div class="painel-hud">
+        <!-- Status Online -->
+        <div class="tag-status">
+            <span></span> Whitelist Aberta
         </div>
 
-        <div class="logo-area">
-            <h1 class="titulo">Portal<br>Itália</h1>
-            <p class="subtitulo">Sua jornada começa aqui</p>
-        </div>
+        <!-- Título -->
+        <h1 class="titulo">
+            Portal<br>Itália
+            <span>Roleplay</span>
+        </h1>
 
-        <a href="login.html" class="botao-entrar">
-            <i class="fas fa-sign-in-alt"></i>
-            Acessar o Sistema
+        <div class="divisoria"></div>
+
+        <!-- Texto -->
+        <p class="descricao">
+            Acesse a central de comando oficial. Gerencie sua equipe, registre seu ponto e acompanhe sua evolução na organização.
+        </p>
+
+        <!-- Botão -->
+        <a href="login.html" class="botao">
+            Acessar Sistema
+            <i class="fas fa-chevron-right"></i>
         </a>
     </div>
 
     <div class="rodape">
-        &copy; 2026 Organização Itália · Todos os direitos reservados
+        &copy; 2026 Organização Itália
     </div>
 
 </body>
