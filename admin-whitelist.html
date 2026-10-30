@@ -249,6 +249,21 @@
             await sb.from('registros_whitelist').update({ status: 'recusado' }).eq('id', id);
             carregarFichas();
         }
+        // Verifica se o usuário já está logado ao abrir a página
+window.addEventListener('DOMContentLoaded', () => {
+    const logado = sessionStorage.getItem('membro_logado');
+    if (logado) {
+        const membro = JSON.parse(logado);
+        const CARGOS_LIDERANCA = ['Líder da organização', '01 da organização', 'Coordenador', 'Gerente geral', 'Gerente'];
+        
+        if (CARGOS_LIDERANCA.includes(membro.cargo)) {
+            // Pula a tela de login e vai direto pro painel
+            document.getElementById('tela-login').style.display = 'none';
+            document.getElementById('tela-admin').style.display = 'block';
+            carregarFichas();
+        }
+    }
+});
     </script>
 </body>
   </html>
