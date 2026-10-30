@@ -408,6 +408,203 @@
                 }
             }
         });
+        // ==========================================
+// SISTEMA DE MODAIS (SUBSTITUI ALERT E CONFIRM)
+// ==========================================
+
+function mostrarAlerta(mensagem, tipo = 'aviso') {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000;
+        display: flex; align-items: center; justify-content: center; padding: 20px;
+        backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+    `;
+    
+    const corBorda = tipo === 'erro' ? '#ef4444' : '#22c55e';
+    const corIcone = tipo === 'erro' ? '#ef4444' : '#22c55e';
+    const icone = tipo === 'erro' ? 'fa-times-circle' : 'fa-check-circle';
+
+    modal.innerHTML = `
+        <div style="background: #0a0f0d; border: 1px solid ${corBorda}; border-radius: 10px; padding: 30px 25px; max-width: 350px; width: 100%; text-align: center; box-shadow: 0 0 30px rgba(34,197,94,0.2); animation: aparecer 0.3s forwards;">
+            <i class="fas ${icone}" style="font-size: 50px; color: ${corIcone}; margin-bottom: 15px;"></i>
+            <p style="color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">${mensagem}</p>
+            <button onclick="this.closest('div').parentElement.remove()" style="background: ${corBorda}; color: #000; border: none; padding: 12px 20px; border-radius: 6px; font-weight: 700; font-family: 'Oswald', sans-serif; cursor: pointer; width: 100%; text-transform: uppercase;">Entendido</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+function confirmarAcao(mensagem) {
+    return new Promise((resolve) => {
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000;
+            display: flex; align-items: center; justify-content: center; padding: 20px;
+            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+        `;
+        modal.innerHTML = `
+            <div style="background: #0a0f0d; border: 1px solid #22c55e; border-radius: 10px; padding: 30px 25px; max-width: 350px; width: 100%; text-align: center; box-shadow: 0 0 30px rgba(34,197,94,0.2);">
+                <i class="fas fa-question-circle" style="font-size: 50px; color: #22c55e; margin-bottom: 15px;"></i>
+                <p style="color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">${mensagem}</p>
+                <div style="display: flex; gap: 10px;">
+                    <button id="btn-cancelar-modal" style="background: transparent; color: #a1a1aa; border: 1px solid #52525b; padding: 12px 20px; border-radius: 6px; font-weight: 700; font-family: 'Oswald', sans-serif; cursor: pointer; flex: 1;">Cancelar</button>
+                    <button id="btn-confirmar-modal" style="background: #22c55e; color: #000; border: none; padding: 12px 20px; border-radius: 6px; font-weight: 700; font-family: 'Oswald', sans-serif; cursor: pointer; flex: 1;">Confirmar</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        modal.querySelector('#btn-confirmar-modal').onclick = () => { modal.remove(); resolve(true); };
+        modal.querySelector('#btn-cancelar-modal').onclick = () => { modal.remove(); resolve(false); };
+    });
+}
+
+// ==========================================
+// LÓGICA DO ADMIN
+// ==========================================
+
+async function fazerLoginAdmin() {
+    const pass = document.getElementById('login-pass').value.trim();
+    const senha = document.getElementById('login-senha').value;
+
+    if (!pass || !senha) { mostrarAlerta("Preencha o passaporte e a senha!", "erro"); return; }
+
+    const { data, error } = await sb.from('membros')
+        .select('cargo, senha_credencial, nome')
+        .eq('passaporte', pass)
+        .single();
+
+    if (error || !data) {
+        mostrarAlerta("Passaporte não encontrado!", "erro");
+        return;
+    }
+
+    const cargosPermitidos = ['Líder da organização', '01 da organização', 'Coordenador', 'Gerente geral', 'Gerente'];
+    if (!cargosPermitidos.includes(data.cargo)) {
+        mostrarAlerta("Você não tem permissão para acessar esta área.", "erro");
+        return;
+    }
+
+    if (String(data.senha_credencial).trim() !== String(senha).trim()) {
+        mostrarAlerta("Senha incorreta!", "erro");
+        return;
+    }
+
+    document.getElementById('tela-login').style.display = 'none';
+    document.getElementById('tela-admin').style.display = 'block';
+    carregarFichas();
+}
+
+function sairAdmin() {
+    sessionStorage.removeItem('membro_logado');
+    document.getElementById('tela-admin').style.display = 'none';
+    document.getElementById('tela-login').style.display = 'block';
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-senha').value = '';
+}
+
+async function carregarFichas() {
+    const container = document.getElementById('lista-fichas');
+    container.innerHTML = '<p style="color:#64748b; text-align:center;">Buscando fichas...</p>';
+
+    const { data, error } = await sb.from('registros_whitelist')
+        .select('*')
+        .eq('status', 'pendente')
+        .order('criado_em', { ascending: false });
+
+    if (error) {
+        container.innerHTML = `<p style="color:red;">Erro: ${error.message}</p>`;
+        return;
+    }
+
+    if (data.length === 0) {
+        container.innerHTML = '<p style="color:#64748b; text-align:center; padding: 20px;">Nenhuma ficha pendente no momento.</p>';
+        return;
+    }
+
+    container.innerHTML = data.map(ficha => `
+        <div class="card-ficha">
+            <div class="ficha-dados">
+                <p><strong>Nome:</strong> ${ficha.nome}</p>
+                <p><strong>Passaporte:</strong> ${ficha.passaporte}</p>
+                <p><strong>Idade:</strong> ${ficha.idade}</p>
+                <p><strong>Experiência:</strong> ${ficha.experiencia}</p>
+                <div class="historia"><strong>História:</strong><br> ${ficha.historia}</div>
+            </div>
+            <div class="ficha-acoes">
+                <input type="text" class="input-senha" id="senha-${ficha.id}" placeholder="Definir senha do jogador">
+                <button class="btn-aprovar" onclick="aprovarFicha(${ficha.id}, '${ficha.nome}', '${ficha.passaporte}')">Aprovar</button>
+                <button class="btn-recusar" onclick="recusarFicha(${ficha.id})">Recusar</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function aprovarFicha(id, nome, passaporte) {
+    const senhaCriada = document.getElementById(`senha-${id}`).value;
+
+    if (!senhaCriada) {
+        mostrarAlerta("Você precisa digitar uma senha para aprovar este jogador!", "erro");
+        return;
+    }
+
+    const confirmado = await confirmarAcao(`Aprovar ${nome}? A conta será criada com a senha: ${senhaCriada}`);
+    if (!confirmado) return;
+
+    // 1. Verifica se já existe um membro com esse passaporte
+    const { data: checkExist } = await sb.from('membros').select('id').eq('passaporte', passaporte);
+    
+    if (checkExist && checkExist.length > 0) {
+        // Se já existe, já foi aprovado antes. Vamos apenas atualizar a ficha para "aprovado" e sair.
+        await sb.from('registros_whitelist').update({ status: 'aprovado', senha_criada: senhaCriada }).eq('id', id);
+        mostrarAlerta(`O passaporte ${passaporte} já estava cadastrado. A ficha foi movida para aprovada.`, "aviso");
+        carregarFichas();
+        return;
+    }
+
+    // 2. Cria o membro
+    const { error: erroCriar } = await sb.from('membros').insert([{
+        nome: nome,
+        passaporte: passaporte,
+        cargo: 'Novato', 
+        senha_credencial: senhaCriada,
+        xp_total: 0,
+        advertencias: 0
+    }]);
+
+    if (erroCriar) {
+        mostrarAlerta("Erro ao criar conta: " + erroCriar.message, "erro");
+        return;
+    }
+
+    // 3. Atualiza o status da ficha
+    await sb.from('registros_whitelist').update({ status: 'aprovado', senha_criada: senhaCriada }).eq('id', id);
+    
+    mostrarAlerta(`${nome} aprovado com sucesso!`, "sucesso");
+    carregarFichas(); 
+}
+
+async function recusarFicha(id) {
+    const confirmado = await confirmarAcao("Tem certeza que deseja recusar esta ficha?");
+    if (!confirmado) return;
+    
+    await sb.from('registros_whitelist').update({ status: 'recusado' }).eq('id', id);
+    carregarFichas();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const logado = sessionStorage.getItem('membro_logado');
+    if (logado) {
+        const membro = JSON.parse(logado);
+        const cargosPermitidos = ['Líder da organização', '01 da organização', 'Coordenador', 'Gerente geral', 'Gerente'];
+        
+        if (cargosPermitidos.includes(membro.cargo)) {
+            document.getElementById('tela-login').style.display = 'none';
+            document.getElementById('tela-admin').style.display = 'block';
+            carregarFichas();
+        }
+    }
+});
     </script>
 </body>
 </html>
