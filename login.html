@@ -277,7 +277,7 @@
         }
 
         async function fazerLogin() {
-            const passaporte = document.getElementById('campo-passaporte').value.trim();
+            const passaporte = String(document.getElementById('campo-passaporte').value).trim();
             const senha = document.getElementById('campo-senha').value;
             const btn = document.getElementById('btn-entrar');
 
