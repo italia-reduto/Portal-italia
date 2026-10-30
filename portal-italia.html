@@ -27,15 +27,14 @@
             z-index: 0;
         }
 
-        /* Container do Boneco - Agora na direita e embaixo */
         .container-boneco {
-            position: absolute;
-            bottom: -5%; /* Cola ele no chão */
-            right: -5%; /* Dá uma leve vazada na borda para ficar mais natural */
-            width: 80vw; /* Ocupa 80% da largura da tela */
-            height: 75vh; /* Ocupa 75% da altura */
-            z-index: 1;
-            pointer-events: none; /* Para o boneco não atrapalhar o clique */
+    position: absolute;
+    bottom: 0; /* Cola no chão da tela */
+    right: -15vw; /* Joga um pouco pra fora da tela pra dar um enquadramento de cinema */
+    width: 120vw; /* Deixa ele MUITO maior (maior que a tela) */
+    height: 95vh; /* Ocupa quase toda a altura */
+    z-index: 1;
+    pointer-events: none; 
         }
 
         /* A Imagem */
