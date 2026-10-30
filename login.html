@@ -277,57 +277,39 @@
         }
 
         async function fazerLogin() {
-            const passaporte = String(document.getElementById('campo-passaporte').value).trim();
-            const senha = document.getElementById('campo-senha').value;
-            const btn = document.getElementById('btn-entrar');
+    const passaporte = document.getElementById('campo-passaporte').value.trim();
+    const senha = document.getElementById('campo-senha').value;
+    const btn = document.getElementById('btn-entrar');
+    const erroEl = document.getElementById('msg-erro');
 
-            if (!passaporte || !senha) {
-                mostrarErro('Preencha o passaporte e a senha.');
-                return;
-            }
+    btn.disabled = true;
+    btn.querySelector('span').innerText = 'Testando...';
+    erroEl.innerText = "Buscando conexão com o banco...";
+    erroEl.style.display = 'block';
+    erroEl.style.color = 'white';
 
-            btn.disabled = true;
-            btn.querySelector('span').innerText = 'Autenticando...';
+    // TESTE BRUTO: Puxar os primeiros 3 membros da tabela, sem filtro nenhum
+    const { data, error } = await sb.from('membros').select('*').limit(3);
 
-            const { data, error } = await sb.from('membros')
-                .select('nome, cargo, senha, passaporte')
-                .eq('passaporte', passaporte)
-                .single();
+    if (error) {
+        erroEl.innerText = "ERRO DO SUPABASE: " + error.message;
+        btn.disabled = false;
+        btn.querySelector('span').innerText = 'Entrar no Sistema';
+        return;
+    }
 
-            if (error || !data) {
-                mostrarErro('Passaporte não encontrado no sistema.');
-                btn.disabled = false;
-                btn.querySelector('span').innerText = 'Entrar no Sistema';
-                return;
-            }
+    if (!data || data.length === 0) {
+        erroEl.innerText = "CONECTOU, MAS A TABELA ESTÁ VAZIA (O RLS pode estar bloqueando).";
+        btn.disabled = false;
+        btn.querySelector('span').innerText = 'Entrar no Sistema';
+        return;
+    }
 
-            if (data.senha !== senha) {
-                mostrarErro('Senha incorreta. Tente novamente.');
-                btn.disabled = false;
-                btn.querySelector('span').innerText = 'Entrar no Sistema';
-                return;
-            }
-
-            // Login OK — salva sessão
-            sessionStorage.setItem('membro_logado', JSON.stringify({
-                nome: data.nome,
-                passaporte: data.passaporte,
-                cargo: data.cargo
-            }));
-
-            // Roteamento por cargo
-            const ehLideranca = CARGOS_LIDERANCA.includes(data.cargo);
-            btn.querySelector('span').innerText = 'Bem-vindo, ' + data.nome + '!';
-            btn.style.background = '#166534';
-            btn.style.color = '#86efac';
-
-            setTimeout(() => {
-                if (ehLideranca) {
-                    window.location.href = 'admin-whitelist.html';
-                } else {
-                    window.location.href = 'dashboard.html';
-                }
-            }, 900);
+    // Se chegou aqui, ele leu os dados. Vamos ver o que tem dentro:
+    erroEl.innerText = "LEITURA OK! Achei " + data.length + " membros. O primeiro é o passaporte: " + data[0].passaporte;
+    
+    btn.disabled = false;
+    btn.querySelector('span').innerText = 'Entrar no Sistema';
         }
     </script>
 </body>
