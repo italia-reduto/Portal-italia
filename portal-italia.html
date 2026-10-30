@@ -9,16 +9,13 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            /* Fundo verde escuro, quase preto */
+            /* Fundo verde escuro */
             background: radial-gradient(circle at center, #0f291b 0%, #050a07 100%);
             color: white;
             font-family: 'Inter', sans-serif;
             height: 100vh;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            position: relative;
         }
 
         /* Luz verde suave no fundo */
@@ -26,86 +23,87 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15) 0%, transparent 60%);
-            z-index: -1;
-            animation: pulso 4s infinite alternate;
+            background: radial-gradient(circle at 70% 80%, rgba(34, 197, 94, 0.15) 0%, transparent 60%);
+            z-index: 0;
         }
 
-        /* Container do Boneco */
+        /* Container do Boneco - Agora na direita e embaixo */
         .container-boneco {
-            position: relative;
-            width: 100%;
-            height: 55vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            margin-bottom: -20px; /* Puxa o texto um pouco pra cima */
+            position: absolute;
+            bottom: -5%; /* Cola ele no chão */
+            right: -5%; /* Dá uma leve vazada na borda para ficar mais natural */
+            width: 80vw; /* Ocupa 80% da largura da tela */
+            height: 75vh; /* Ocupa 75% da altura */
+            z-index: 1;
+            pointer-events: none; /* Para o boneco não atrapalhar o clique */
         }
 
         /* A Imagem */
         .boneco-img {
+            width: 100%;
             height: 100%;
-            max-width: 100%;
             object-fit: contain;
+            object-position: bottom right;
             /* Sombra verde neon no boneco */
-            filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.4));
+            filter: drop-shadow(0 0 30px rgba(34, 197, 94, 0.4));
             animation: flutuar 4s ease-in-out infinite;
-            z-index: 2;
         }
 
-        /* Textos */
+        /* Textos e Botão - Agora na esquerda */
         .area-texto {
-            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 24px;
+            transform: translateY(-50%);
             z-index: 10;
-            background: linear-gradient(to top, #050a07 60%, transparent 100%);
-            width: 100%;
-            padding: 20px 0 40px;
+            max-width: 250px; /* Limita a largura para não encostar no boneco */
         }
 
         .titulo-principal {
-            font-size: 48px;
+            font-size: 52px;
             font-weight: 900;
-            letter-spacing: 4px;
+            letter-spacing: 2px;
+            line-height: 1.1;
             text-transform: uppercase;
             /* Degradê Verde e Branco */
             background: linear-gradient(180deg, #ffffff 0%, #22c55e 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             opacity: 0;
-            transform: translateY(20px);
-            animation: aparecer 1s 0.5s forwards;
+            transform: translateX(-20px); /* Animação vindo da esquerda */
+            animation: aparecer 1s 0.3s forwards;
         }
 
         .subtitulo {
             font-size: 13px;
             font-weight: 700;
-            color: #86efac; /* Verde clarinho */
-            letter-spacing: 3px;
+            color: #86efac;
+            letter-spacing: 2px;
             text-transform: uppercase;
             margin-bottom: 35px;
             opacity: 0;
-            transform: translateY(20px);
-            animation: aparecer 1s 0.8s forwards;
+            transform: translateX(-20px);
+            animation: aparecer 1s 0.6s forwards;
         }
 
         /* Botão Verde */
         .botao-entrar {
             display: inline-block;
-            padding: 16px 48px;
-            font-size: 16px;
+            padding: 16px 32px;
+            font-size: 15px;
             font-weight: 700;
             color: #fff;
             text-decoration: none;
-            /* Gradiente Verde */
+            text-align: center;
             background: linear-gradient(135deg, #166534 0%, #22c55e 100%);
             border: 1px solid rgba(34, 197, 94, 0.5);
             border-radius: 8px;
             box-shadow: 0 8px 32px rgba(34, 197, 94, 0.3);
             transition: all 0.3s ease;
             opacity: 0;
-            transform: translateY(20px);
-            animation: aparecer 1s 1.1s forwards;
+            transform: translateX(-20px);
+            animation: aparecer 1s 0.9s forwards;
         }
 
         .botao-entrar:hover {
@@ -116,18 +114,13 @@
 
         /* Animações */
         @keyframes aparecer {
-            to { opacity: 1; transform: translateY(0); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         @keyframes flutuar {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
+            50% { transform: translateY(-15px); }
             100% { transform: translateY(0px); }
-        }
-
-        @keyframes pulso {
-            0% { opacity: 0.4; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1.05); }
         }
     </style>
 </head>
@@ -135,17 +128,17 @@
 
     <div class="fundo-luz"></div>
 
-    <div class="container-boneco">
-        
-        <img src="ei_1793336030505-removebg-preview.png" alt="Personagem Itália" class="boneco-img">
+    <!-- Texto na Esquerda -->
+    <div class="area-texto">
+        <h1 class="titulo-principal">Portal<br>Itália</h1>
+        <p class="subtitulo">Sua jornada começa aqui</p>
+        <a href="login.html" class="botao-entrar">ACESSAR O SISTEMA</a>
     </div>
 
-    <div class="area-texto">
-        <h1 class="titulo-principal">Portal Itália</h1>
-        <p class="subtitulo">Sua jornada começa aqui</p>
-        
-        <!-- Botão que leva pro login real -->
-        <a href="login.html" class="botao-entrar">ACESSAR O SISTEMA</a>
+    <!-- Boneco na Direita -->
+    <div class="container-boneco">
+        <!-- SUBSTITUA PELO NOME DA SUA IMAGEM -->
+        <img src="boneco.png" alt="Personagem Itália" class="boneco-img">
     </div>
 
 </body>
