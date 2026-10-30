@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Portal Itália</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            /* Fundo verde escuro, quase preto */
+            background: radial-gradient(circle at center, #0f291b 0%, #050a07 100%);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Luz verde suave no fundo */
+        .fundo-luz {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15) 0%, transparent 60%);
+            z-index: -1;
+            animation: pulso 4s infinite alternate;
+        }
+
+        /* Container do Boneco */
+        .container-boneco {
+            position: relative;
+            width: 100%;
+            height: 55vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: -20px; /* Puxa o texto um pouco pra cima */
+        }
+
+        /* A Imagem */
+        .boneco-img {
+            height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            /* Sombra verde neon no boneco */
+            filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.4));
+            animation: flutuar 4s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        /* Textos */
+        .area-texto {
+            text-align: center;
+            z-index: 10;
+            background: linear-gradient(to top, #050a07 60%, transparent 100%);
+            width: 100%;
+            padding: 20px 0 40px;
+        }
+
+        .titulo-principal {
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            /* Degradê Verde e Branco */
+            background: linear-gradient(180deg, #ffffff 0%, #22c55e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: aparecer 1s 0.5s forwards;
+        }
+
+        .subtitulo {
+            font-size: 13px;
+            font-weight: 700;
+            color: #86efac; /* Verde clarinho */
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: aparecer 1s 0.8s forwards;
+        }
+
+        /* Botão Verde */
+        .botao-entrar {
+            display: inline-block;
+            padding: 16px 48px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            /* Gradiente Verde */
+            background: linear-gradient(135deg, #166534 0%, #22c55e 100%);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(34, 197, 94, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: aparecer 1s 1.1s forwards;
+        }
+
+        .botao-entrar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.6);
+            background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
+        }
+
+        /* Animações */
+        @keyframes aparecer {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes flutuar {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulso {
+            0% { opacity: 0.4; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fundo-luz"></div>
+
+    <div class="container-boneco">
+        
+        <img src="ei_1793336030505-removebg-preview.png" alt="Personagem Itália" class="boneco-img">
+    </div>
+
+    <div class="area-texto">
+        <h1 class="titulo-principal">Portal Itália</h1>
+        <p class="subtitulo">Sua jornada começa aqui</p>
+        
+        <!-- Botão que leva pro login real -->
+        <a href="login.html" class="botao-entrar">ACESSAR O SISTEMA</a>
+    </div>
+
+</body>
+</html>
