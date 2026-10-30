@@ -29,24 +29,26 @@
 
         .container-boneco {
     position: absolute;
-    bottom: 0; /* Cola no chão da tela */
-    right: -15vw; /* Joga um pouco pra fora da tela pra dar um enquadramento de cinema */
-    width: 120vw; /* Deixa ele MUITO maior (maior que a tela) */
-    height: 95vh; /* Ocupa quase toda a altura */
+    bottom: 0; /* Cola no chão */
+    right: -5vw; /* Cola na direita e dá uma leve vazada pra fora pra ficar estiloso */
+    height: 90vh; /* Altura do boneco (pode aumentar pra 100vh se quiser ele gigante) */
+    width: auto; /* Deixa a largura automática para não achatar */
     z-index: 1;
     pointer-events: none; 
-        }
+    display: flex;
+    justify-content: flex-end;
+}
 
-        /* A Imagem */
-        .boneco-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            object-position: bottom right;
-            /* Sombra verde neon no boneco */
-            filter: drop-shadow(0 0 30px rgba(34, 197, 94, 0.4));
-            animation: flutuar 4s ease-in-out infinite;
-        }
+/* A Imagem */
+.boneco-img {
+    height: 100%;
+    width: auto;
+    max-width: none; /* Impede o navegador de tentar "espremer" a imagem */
+    object-fit: contain;
+    object-position: bottom right;
+    filter: drop-shadow(0 0 30px rgba(34, 197, 94, 0.4));
+    animation: flutuar 4s ease-in-out infinite;
+}
 
         /* Textos e Botão - Agora na esquerda */
         .area-texto {
