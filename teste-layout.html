@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Itália 2.0 | Layout Base</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --fundo: #0a0f0d;
+            --vidro: rgba(15, 23, 20, 0.7);
+            --borda: rgba(34, 197, 94, 0.15);
+            --verde: #22c55e;
+            --texto: #f3f4f6;
+            --texto-mutado: #9ca3af;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--fundo);
+            color: var(--texto);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- FUNDO VIVO (PARTÍCULAS E GRADE) --- */
+        .fundo-degrade {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at 10% 10%, rgba(34, 197, 94, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 90%, rgba(20, 83, 45, 0.2) 0%, transparent 50%);
+            z-index: -2;
+        }
+        .grade-fundo {
+            position: fixed; inset: 0;
+            background-image: linear-gradient(rgba(34, 197, 94, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(34, 197, 94, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px; z-index: -1;
+            mask-image: radial-gradient(circle at center, black 10%, transparent 90%);
+            -webkit-mask-image: radial-gradient(circle at center, black 10%, transparent 90%);
+        }
+        .particula {
+            position: fixed; bottom: -10px; background-color: var(--verde);
+            border-radius: 50%; box-shadow: 0 0 10px var(--verde);
+            opacity: 0; animation: subir linear infinite; z-index: -1;
+        }
+        .p1 { width: 3px; height: 3px; left: 10%; animation-duration: 6s; }
+        .p2 { width: 4px; height: 4px; left: 30%; animation-duration: 8s; animation-delay: 2s; }
+        .p3 { width: 2px; height: 2px; left: 50%; animation-duration: 5s; animation-delay: 1s; }
+        .p4 { width: 5px; height: 5px; left: 70%; animation-duration: 9s; animation-delay: 3s; }
+        .p5 { width: 3px; height: 3px; left: 90%; animation-duration: 7s; animation-delay: 1.5s; }
+        @keyframes subir {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            20% { opacity: 0.6; } 80% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+
+        /* --- SIDEBAR (MENU LATERAL PC) --- */
+        .sidebar {
+            width: 260px; background: var(--vidro);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--borda);
+            display: flex; flex-direction: column; z-index: 10;
+        }
+        .logo {
+            padding: 25px 20px; font-family: 'Oswald', sans-serif;
+            font-size: 22px; font-weight: 700; color: var(--verde);
+            border-bottom: 1px solid var(--borda); display: flex; align-items: center; gap: 10px;
+            letter-spacing: 1px;
+        }
+        .menu { flex: 1; padding: 20px 10px; display: flex; flex-direction: column; gap: 5px; }
+        .item-menu {
+            display: flex; align-items: center; gap: 15px; padding: 14px 20px;
+            border-radius: 8px; color: var(--texto-mutado); text-decoration: none;
+            font-size: 14px; font-weight: 500; transition: 0.3s; cursor: pointer;
+        }
+        .item-menu:hover { background: rgba(255,255,255,0.03); color: var(--texto); }
+        .item-menu.ativo { 
+            background: rgba(34, 197, 94, 0.08); color: var(--verde);
+            border-left: 3px solid var(--verde); border-radius: 0 8px 8px 0;
+        }
+        .item-menu i { width: 20px; text-align: center; font-size: 16px; }
+
+        /* --- MAIN (CONTEÚDO PRINCIPAL) --- */
+        .main { flex: 1; display: flex; flex-direction: column; height: 100%; }
+        
+        .topbar {
+            height: 70px; background: var(--vidro);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--borda);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 30px; z-index: 5;
+        }
+        .saudacao { font-family: 'Oswald', sans-serif; font-size: 18px; }
+        .saudacao span { color: var(--verde); }
+        .status-topo { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--texto-mutado); }
+        .bolinha { width: 8px; height: 8px; border-radius: 50%; background: var(--verde); box-shadow: 0 0 8px var(--verde); }
+
+        .conteudo {
+            flex: 1; padding: 30px; overflow-y: auto;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .placeholder {
+            border: 1px dashed var(--borda); padding: 50px; border-radius: 12px;
+            text-align: center; color: var(--texto-mutado);
+        }
+
+        /* --- MENU MOBILE (CELULAR) --- */
+        .menu-mobile {
+            display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--vidro); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--borda); border-radius: 20px;
+            padding: 10px 20px; z-index: 100; gap: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .item-mob {
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            color: var(--texto-mutado); font-size: 10px; text-decoration: none; cursor: pointer;
+        }
+        .item-mob i { font-size: 18px; }
+        .item-mob.ativo { color: var(--verde); }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .menu-mobile { display: flex; }
+            .topbar { padding: 0 20px; height: 60px; }
+            .conteudo { padding: 20px; padding-bottom: 100px; }
+            .status-topo span { display: none; }
+        }
+    </style>
+  </head>
+  <body>
+
+    <!-- FUNDO VIVO -->
+    <div class="fundo-degrade"></div>
+    <div class="grade-fundo"></div>
+    <div class="particula p1"></div>
+    <div class="particula p2"></div>
+    <div class="particula p3"></div>
+    <div class="particula p4"></div>
+    <div class="particula p5"></div>
+
+    <!-- MENU LATERAL (PC) -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i> ITÁLIA 2.0
+        </div>
+        <nav class="menu">
+            <a class="item-menu ativo" onclick="mudarAba('inicio', this)"><i class="fas fa-home"></i> Visão Geral</a>
+            <a class="item-menu" onclick="mudarAba('perfil', this)"><i class="fas fa-id-card"></i> Meu Perfil</a>
+            <a class="item-menu" onclick="mudarAba('equipe', this)"><i class="fas fa-users"></i> Equipe</a>
+            <a class="item-menu" onclick="mudarAba('tickets', this)"><i class="fas fa-headset"></i> Suporte</a>
+        </nav>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main">
+        
+        <!-- BARRA SUPERIOR -->
+        <header class="topbar">
+            <div class="saudacao">Bem-vindo, <span>Falcão</span></div>
+            <div class="status-topo">
+                <div class="bolinha"></div>
+                <span>Sistema Online</span>
+            </div>
+        </header>
+
+        <!-- ÁREA ONDE AS COISAS VÃO APARECER -->
+        <div class="conteudo" id="area-conteudo">
+            
+            <!-- TELA 1: INÍCIO -->
+            <div id="tela-inicio" class="placeholder" style="display: block;">
+                <i class="fas fa-layer-group" style="font-size: 40px; color: var(--verde); margin-bottom: 15px;"></i>
+                <h2 style="font-family: 'Oswald'; color: white; margin-bottom: 10px;">Área de Conteúdo</h2>
+                <p>Aqui vai entrar os cards do Dashboard (XP, Faltas, Avisos...)</p>
+            </div>
+
+            <!-- TELA 2: PERFIL -->
+            <div id="tela-perfil" class="placeholder" style="display: none;">
+                <i class="fas fa-id-card" style="font-size: 40px; color: var(--verde); margin-bottom: 15px;"></i>
+                <h2 style="font-family: 'Oswald'; color: white; margin-bottom: 10px;">Meu Perfil</h2>
+                <p>Aqui vai entrar a Ficha do Membro completa.</p>
+            </div>
+
+            <!-- TELA 3: EQUIPE -->
+            <div id="tela-equipe" class="placeholder" style="display: none;">
+                <i class="fas fa-users" style="font-size: 40px; color: var(--verde); margin-bottom: 15px;"></i>
+                <h2 style="font-family: 'Oswald'; color: white; margin-bottom: 10px;">Equipe</h2>
+                <p>Aqui vai entrar a lista de membros da organização.</p>
+            </div>
+
+            <!-- TELA 4: TICKETS -->
+            <div id="tela-tickets" class="placeholder" style="display: none;">
+                <i class="fas fa-headset" style="font-size: 40px; color: var(--verde); margin-bottom: 15px;"></i>
+                <h2 style="font-family: 'Oswald'; color: white; margin-bottom: 10px;">Suporte</h2>
+                <p>Aqui vai entrar a aba de Tickets.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MENU MOBILE (CELULAR) -->
+    <nav class="menu-mobile">
+        <a class="item-mob ativo" onclick="mudarAba('inicio', this)"><i class="fas fa-home"></i><span>Início</span></a>
+        <a class="item-mob" onclick="mudarAba('perfil', this)"><i class="fas fa-id-card"></i><span>Perfil</span></a>
+        <a class="item-mob" onclick="mudarAba('equipe', this)"><i class="fas fa-users"></i><span>Equipe</span></a>
+        <a class="item-mob" onclick="mudarAba('tickets', this)"><i class="fas fa-headset"></i><span>Suporte</span></a>
+    </nav>
+
+    <!-- SCRIPT PARA FAZER O MENU FUNCIONAR -->
+    <script>
+        function mudarAba(aba, botaoClicado) {
+            // Esconde todas as telas
+            document.querySelectorAll('.placeholder').forEach(tela => tela.style.display = 'none');
+            // Mostra a tela clicada
+            document.getElementById('tela-' + aba).style.display = 'block';
+
+            // Tira a cor verde de todos os botões
+            document.querySelectorAll('.item-menu, .item-mob').forEach(btn => btn.classList.remove('ativo'));
+            
+            // Pinta o botão clicado (funciona tanto no PC quanto no Celular)
+            const botoes = document.querySelectorAll(`[onclick*="'${aba}'"]`);
+            botoes.forEach(btn => btn.classList.add('ativo'));
+        }
+    </script>
+</body>
+</html>
