@@ -305,34 +305,43 @@
         });
 
         async function carregarAvisos() {
-            const container = document.getElementById('lista-avisos');
-            
-            // Puxa os 3 últimos avisos da tabela 'avisos'
-            const { data, error } = await sb.from('avisos')
-                .select('*')
-                .order('criado_em', { ascending: false })
-                .limit(3);
+    const container = document.getElementById('lista-avisos');
+    
+    // Puxa os 3 últimos avisos da tabela 'avisos'
+    const { data, error } = await sb.from('avisos')
+        .select('*')
+        .order('criado_em', { ascending: false })
+        .limit(3);
 
-            if (error || !data || data.length === 0) {
-                // Se der erro ou não tiver aviso, mantém a mensagem padrão
-                return; 
-            }
+    if (error || !data || data.length === 0) {
+        return; // Se não tiver aviso, mantém o "Nenhum aviso recente"
+    }
 
-            let html = '';
-            data.forEach(aviso => {
-                const titulo = aviso.titulo || 'Aviso da Liderança';
-                const texto = aviso.conteudo || aviso.mensagem || 'Sem detalhes.';
-                
-                html += `
-                    <div class="aviso-item">
-                        <div class="aviso-titulo">${titulo}</div>
-                        <div class="aviso-texto">${texto}</div>
-                        <span class="aviso-data">Recentemente</span>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
+    let html = '';
+    data.forEach(aviso => {
+        // Puxa os dados das colunas corretas (texto e autor)
+        const textoAviso = aviso.texto || 'Sem detalhes.';
+        const autorAviso = aviso.autor || 'Liderança';
+        
+        // Formata a data bonitinha (opcional)
+        let dataFormatada = 'Recentemente';
+        if (aviso.criado_em) {
+            const dataObj = new Date(aviso.criado_em);
+            dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+        }
+
+        html += `
+            <div class="aviso-item">
+                <div class="aviso-texto" style="font-size: 14px; color: #fff; margin-bottom: 8px;">${textoAviso}</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">
+                    <span style="font-size: 11px; color: var(--verde); font-weight: 600;"><i class="fas fa-user-shield"></i> ${autorAviso}</span>
+                    <span class="aviso-data" style="margin-top: 0;">${dataFormatada}</span>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
         }
     </script>
 </body>
