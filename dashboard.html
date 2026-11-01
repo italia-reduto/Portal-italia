@@ -47,6 +47,27 @@
             position: relative;
         }
 
+        /* ANIMAÇÃO DE ENTRADA DA PÁGINA (PONTO 8) */
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container-principal {
+            width: 100%; max-width: 800px;
+            display: flex; flex-direction: column; gap: 15px;
+            position: relative; z-index: 10;
+            margin-top: 20px; padding-bottom: 120px;
+        }
+        .anim-entrada {
+            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        /* Efeito cascata para os cards */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
         /* FUNDO ANIMADO */
         .fundo-degrade {
             position: fixed; inset: 0;
@@ -76,13 +97,6 @@
             0% { transform: translateY(0) scale(1); opacity: 0; }
             20% { opacity: 0.6; } 80% { opacity: 0.6; }
             100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
-        }
-
-        .container-principal {
-            width: 100%; max-width: 800px;
-            display: flex; flex-direction: column; gap: 15px;
-            position: relative; z-index: 10;
-            margin-top: 20px; padding-bottom: 120px;
         }
 
         /* CARTÃO DE PERFIL */
@@ -160,18 +174,22 @@
         .card-acao span { font-family: 'Oswald', sans-serif; font-size: 15px; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
         .card-acao p { font-size: 11px; color: var(--texto-mutado); }
 
-        /* NOTIFICAÇÃO PULSANTE */
-        .icone-notificacao {
+        /* SINO DE NOTIFICAÇÃO PULSANTE (PONTO 10) */
+        .icone-sino {
             position: absolute; top: 15px; right: 15px;
-            width: 10px; height: 10px;
-            background: #ef4444; border-radius: 50%;
-            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
-            animation: pulsar-notificacao 1.5s infinite;
+            color: #ef4444; font-size: 16px;
+            animation: pulsar-sino 1.5s infinite;
         }
-        @keyframes pulsar-notificacao {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        .icone-sino-titulo {
+            color: #ef4444; font-size: 14px; margin-left: 10px;
+            animation: pulsar-sino 1.5s infinite;
+        }
+        @keyframes pulsar-sino {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(10deg); }
+            50% { transform: scale(1) rotate(-10deg); }
+            75% { transform: scale(1.1) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
         }
 
         /* MURAL DE AVISOS */
@@ -213,9 +231,11 @@
             width: 100%; max-width: 500px; max-height: 85vh;
             display: flex; flex-direction: column;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            transform: translateY(20px); transition: transform 0.3s ease;
+            /* ANIMAÇÃO DE ENTRADA DO MODAL (PONTO 7) */
+            transform: scale(0.9) translateY(20px); opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
         }
-        .modal-overlay.ativo .modal-conteudo { transform: translateY(0); }
+        .modal-overlay.ativo .modal-conteudo { transform: scale(1) translateY(0); opacity: 1; }
         
         .modal-header {
             padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -248,8 +268,13 @@
         .config-secao:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
         .config-titulo { font-family: 'Oswald', sans-serif; font-size: 13px; color: var(--verde); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
         .config-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; cursor: pointer; }
-        .config-info { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--texto); font-weight: 500; }
-        .config-info i { width: 16px; text-align: center; color: var(--texto-mutado); }
+        
+        /* DESCRIÇÃO DAS CONFIGURAÇÕES (PONTO 3) */
+        .config-info { display: flex; flex-direction: column; gap: 2px; }
+        .config-info-titulo { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--texto); font-weight: 500; }
+        .config-info-titulo i { width: 16px; text-align: center; color: var(--texto-mutado); }
+        .config-descricao { font-size: 10px; color: var(--texto-mutado); margin-left: 28px; line-height: 1.3; max-width: 200px; }
+        
         .config-select { background: rgba(0,0,0,0.5); border: 1px solid var(--borda); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px; outline: none; }
         .config-badge { font-size: 11px; background: rgba(34, 197, 94, 0.1); color: var(--verde); padding: 3px 8px; border-radius: 10px; border: 1px solid rgba(34, 197, 94, 0.2); }
         .btn-config-acao { background: rgba(255,255,255,0.05); border: 1px solid var(--borda); color: #fff; padding: 5px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.3s; }
@@ -258,12 +283,28 @@
         .btn-config-acao.perigo:hover { background: #ef4444; color: #fff; }
 
         /* SWITCH (ESTILO IPHONE) */
-        .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+        .switch { position: relative; display: inline-block; width: 40px; height: 22px; flex-shrink: 0;}
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #27272a; transition: .4s; border-radius: 34px; }
         .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--verde); }
         input:checked + .slider:before { transform: translateX(18px); }
+
+        /* SISTEMA DE ALERTA CUSTOMIZADO (PONTO 6) */
+        .alerta-custom {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: rgba(10, 15, 13, 0.95);
+            border: 1px solid var(--verde); border-radius: 12px;
+            padding: 15px 20px; display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.2);
+            z-index: 9999; min-width: 280px;
+            transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .alerta-custom.ativo { top: 20px; }
+        .alerta-custom i { font-size: 24px; color: var(--verde); }
+        .alerta-custom p { font-size: 13px; color: #fff; font-weight: 500; }
+        .alerta-custom.erro { border-color: #ef4444; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2); }
+        .alerta-custom.erro i { color: #ef4444; }
 
         /* MENU INFERIOR FLUTUANTE */
         .menu-inferior {
@@ -300,10 +341,11 @@
             .grid-acoes { grid-template-columns: 1fr; }
             .painel-avisos { padding: 15px; }
             .aviso-item { padding: 12px; }
+            .alerta-custom { min-width: 90%; }
         }
     </style>
 </head>
-<body id="corpo-site">
+<body>
     <div class="fundo-degrade"></div>
     <div class="grade-fundo"></div>
     <div class="particula p1"></div>
@@ -314,7 +356,7 @@
 
     <main class="container-principal">
         <!-- CARTÃO DE PERFIL -->
-        <div class="cartao-perfil">
+        <div class="cartao-perfil anim-entrada delay-1">
             <div class="btn-config" onclick="abrirModalConfig()">
                 <i class="fas fa-cog"></i>
             </div>
@@ -338,7 +380,7 @@
         </div>
 
         <!-- MÉTRICAS -->
-        <div class="grid-metricas">
+        <div class="grid-metricas anim-entrada delay-2">
             <div class="card-metrica">
                 <div class="metrica-topo">Presenças <i class="fas fa-check-circle" style="color: #22c55e;"></i></div>
                 <div class="metrica-valor" style="color: #22c55e;" id="kpi-presencas">0</div>
@@ -359,14 +401,15 @@
         </div>
 
         <!-- AÇÕES RÁPIDAS -->
-        <div class="grid-acoes">
+        <div class="grid-acoes anim-entrada delay-3">
             <div class="card-acao" onclick="abrirModalMembros()">
                 <i class="fas fa-users"></i>
                 <span>Membros</span>
                 <p>Ver todos os membros da organização</p>
             </div>
-            <div class="card-acao" onclick="alert('Abrir Tickets em breve')">
-                <div class="icone-notificacao" id="notif-ticket" style="display: none;"></div>
+            <div class="card-acao" onclick="abrirModalTicket()">
+                <!-- O sino só aparece se o JS mandar -->
+                <i class="fas fa-bell icone-sino" id="notif-ticket" style="display: none;"></i>
                 <i class="fas fa-headset"></i>
                 <span>Ticket Recente</span>
                 <p id="status-ticket">Nenhum ticket aberto</p>
@@ -374,11 +417,12 @@
         </div>
 
         <!-- MURAL DE AVISOS -->
-        <div class="painel-avisos">
+        <div class="painel-avisos anim-entrada delay-4">
             <div class="painel-topo">
                 <h3>
                     <i class="fas fa-bullhorn" style="color: var(--verde); margin-right: 8px;"></i> Comunicados
-                    <div class="icone-notificacao" id="notif-aviso" style="position: relative; top: 0; right: 0; margin-left: 10px; display: none;"></div>
+                    <!-- Sino de aviso -->
+                    <i class="fas fa-bell icone-sino-titulo" id="notif-aviso" style="display: none;"></i>
                 </h3>
             </div>
             <div id="lista-avisos" class="lista-avisos">
@@ -386,6 +430,12 @@
             </div>
         </div>
     </main>
+
+    <!-- SISTEMA DE ALERTA VERDE (Fica oculto por padrão) -->
+    <div class="alerta-custom" id="alerta-site">
+        <i class="fas fa-check-circle" id="alerta-icone"></i>
+        <p id="alerta-texto">Mensagem</p>
+    </div>
 
     <!-- MODAL DE MEMBROS -->
     <div class="modal-overlay" id="modal-membros">
@@ -400,7 +450,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE CONFIGURAÇÕES (O CÉREBRO DO SISTEMA) -->
+    <!-- MODAL DE CONFIGURAÇÕES -->
     <div class="modal-overlay" id="modal-config">
         <div class="modal-conteudo" style="max-width: 450px;">
             <div class="modal-header">
@@ -414,25 +464,15 @@
                 <div class="config-secao">
                     <h3 class="config-titulo">Perfil e Identidade</h3>
                     
-                    <div class="config-item" onclick="alterarFoto()">
+                    <div class="config-item" onclick="document.getElementById('input-foto').click()">
                         <div class="config-info">
-                            <i class="fas fa-image"></i>
-                            <span>Alterar Foto de Perfil</span>
+                            <div class="config-info-titulo"><i class="fas fa-image"></i> <span>Foto de Perfil</span></div>
+                            <div class="config-descricao">Escolha uma imagem da sua galeria.</div>
                         </div>
                         <button class="btn-config-acao">Mudar</button>
                     </div>
-
-                    <div class="config-item">
-                        <div class="config-info">
-                            <i class="fas fa-circle" style="color: var(--verde);"></i>
-                            <span>Status de Disponibilidade</span>
-                        </div>
-                        <select class="config-select" id="select-status">
-                            <option value="Em Serviço">Em Serviço</option>
-                            <option value="Em Patrulha">Em Patrulha</option>
-                            <option value="Ausente">Ausente</option>
-                        </select>
-                    </div>
+                    <!-- Input invisível para puxar a galeria do celular -->
+                    <input type="file" id="input-foto" accept="image/*" style="display: none;" onchange="processarFoto(this)">
                 </div>
 
                 <!-- SEÇÃO 2: NOTIFICAÇÕES -->
@@ -441,8 +481,8 @@
                     
                     <div class="config-item">
                         <div class="config-info">
-                            <i class="fas fa-bell"></i>
-                            <span>Notificações no Navegador</span>
+                            <div class="config-info-titulo"><i class="fas fa-bell"></i> <span>Notificações no Navegador</span></div>
+                            <div class="config-descricao">Receba alertas no celular sobre avisos e tickets.</div>
                         </div>
                         <label class="switch">
                             <input type="checkbox" id="switch-notificacao" onchange="toggleNotificacoes(this)">
@@ -452,8 +492,8 @@
 
                     <div class="config-item">
                         <div class="config-info">
-                            <i class="fas fa-mobile-alt"></i>
-                            <span>Vibração e Som</span>
+                            <div class="config-info-titulo"><i class="fas fa-mobile-alt"></i> <span>Vibração e Som</span></div>
+                            <div class="config-descricao">O celular vibra quando algo novo chegar.</div>
                         </div>
                         <label class="switch">
                             <input type="checkbox" id="switch-som" checked>
@@ -464,33 +504,33 @@
 
                 <!-- SEÇÃO 3: SEGURANÇA -->
                 <div class="config-secao">
-                    <h3 class="config-titulo">Segurança da Conta</h3>
+                    <h3 class="config-titulo">Segurança</h3>
                     
                     <div class="config-item">
                         <div class="config-info">
-                            <i class="fas fa-laptop"></i>
-                            <span>Sessões Ativas</span>
+                            <div class="config-info-titulo"><i class="fas fa-laptop"></i> <span>Sessões Ativas</span></div>
+                            <div class="config-descricao">Dispositivos conectados na sua conta.</div>
                         </div>
-                        <span class="config-badge">1 Dispositivo</span>
+                        <span class="config-badge">1 Ativa</span>
                     </div>
 
-                    <div class="config-item">
+                    <div class="config-item" onclick="customAlert('Saindo de todos os dispositivos...', 'erro'); setTimeout(sair, 1000);">
                         <div class="config-info">
-                            <i class="fas fa-sign-out-alt" style="color: #ef4444;"></i>
-                            <span style="color: #ef4444;">Sair de Todos os Dispositivos</span>
+                            <div class="config-info-titulo"><i class="fas fa-sign-out-alt" style="color: #ef4444;"></i> <span style="color: #ef4444;">Sair da Conta</span></div>
+                            <div class="config-descricao">Encerra sua sessão neste dispositivo.</div>
                         </div>
-                        <button class="btn-config-acao perigo" onclick="sair()">Sair</button>
+                        <button class="btn-config-acao perigo">Sair</button>
                     </div>
                 </div>
 
                 <!-- SEÇÃO 4: INTERFACE -->
                 <div class="config-secao">
-                    <h3 class="config-titulo">Interface do Sistema</h3>
+                    <h3 class="config-titulo">Interface</h3>
                     
                     <div class="config-item">
                         <div class="config-info">
-                            <i class="fas fa-magic"></i>
-                            <span>Efeito de Partículas</span>
+                            <div class="config-info-titulo"><i class="fas fa-magic"></i> <span>Efeito de Partículas</span></div>
+                            <div class="config-descricao">Desligue se seu celular estiver fraco.</div>
                         </div>
                         <label class="switch">
                             <input type="checkbox" id="switch-particulas" checked onchange="toggleParticulas(this)">
@@ -500,34 +540,13 @@
 
                     <div class="config-item">
                         <div class="config-info">
-                            <i class="fas fa-tachometer-alt"></i>
-                            <span>Modo Performance</span>
+                            <div class="config-info-titulo"><i class="fas fa-tachometer-alt"></i> <span>Modo Performance</span></div>
+                            <div class="config-descricao">Desliga o vidro e deixa o site mais rápido.</div>
                         </div>
                         <label class="switch">
                             <input type="checkbox" id="switch-performance" onchange="togglePerformance(this)">
                             <span class="slider"></span>
                         </label>
-                    </div>
-                </div>
-
-                <!-- SEÇÃO 5: AJUDA -->
-                <div class="config-secao">
-                    <h3 class="config-titulo">Central de Ajuda</h3>
-                    
-                    <div class="config-item" onclick="alert('Regras da Organização: 1. Respeito acima de tudo. 2. Proibido RDM/VMD. 3. ...')">
-                        <div class="config-info">
-                            <i class="fas fa-book"></i>
-                            <span>Regras da Organização</span>
-                        </div>
-                        <i class="fas fa-chevron-right" style="color: #52525b;"></i>
-                    </div>
-
-                    <div class="config-item" onclick="window.open('https://discord.gg/SEU_LINK_AQUI', '_blank')">
-                        <div class="config-info">
-                            <i class="fab fa-discord"></i>
-                            <span>Entrar no Discord</span>
-                        </div>
-                        <i class="fas fa-chevron-right" style="color: #52525b;"></i>
                     </div>
                 </div>
 
@@ -555,10 +574,39 @@
         </a>
     </nav>
         <script>
-        // Variável global para guardar o membro logado
         let membroLogado = null;
 
-        // --- NAVEGAÇÃO E MENUS ---
+        // ==========================================
+        // 1. SISTEMA DE ALERTA VERDE (PONTO 6)
+        // ==========================================
+        function customAlert(mensagem, tipo = 'sucesso') {
+            const alerta = document.getElementById('alerta-site');
+            const icone = document.getElementById('alerta-icone');
+            const texto = document.getElementById('alerta-texto');
+
+            texto.innerText = mensagem;
+            
+            // Se for erro, fica vermelho, se for sucesso fica verde
+            if (tipo === 'erro') {
+                alerta.classList.add('erro');
+                icone.className = 'fas fa-times-circle';
+            } else {
+                alerta.classList.remove('erro');
+                icone.className = 'fas fa-check-circle';
+            }
+
+            // Animação de entrada
+            alerta.classList.add('ativo');
+
+            // Animação de saída (some depois de 3 segundos)
+            setTimeout(() => {
+                alerta.classList.remove('ativo');
+            }, 3000);
+        }
+
+        // ==========================================
+        // 2. NAVEGAÇÃO E MODAIS
+        // ==========================================
         function mudarMenu(elementoClicado) {
             document.querySelectorAll('.item-menu').forEach(btn => btn.classList.remove('ativo'));
             elementoClicado.classList.add('ativo');
@@ -568,17 +616,14 @@
             document.getElementById('modal-membros').classList.add('ativo');
             carregarMembrosModal();
         }
+        function fecharModalMembros() { document.getElementById('modal-membros').classList.remove('ativo'); }
 
-        function fecharModalMembros() {
-            document.getElementById('modal-membros').classList.remove('ativo');
-        }
+        function abrirModalConfig() { document.getElementById('modal-config').classList.add('ativo'); }
+        function fecharModalConfig() { document.getElementById('modal-config').classList.remove('ativo'); }
 
-        function abrirModalConfig() {
-            document.getElementById('modal-config').classList.add('ativo');
-        }
-
-        function fecharModalConfig() {
-            document.getElementById('modal-config').classList.remove('ativo');
+        function abrirModalTicket() {
+            // Se a gente for criar a tela de tickets depois, ele abre aqui. Por enquanto, só avisa.
+            customAlert("A tela de tickets será construída no próximo passo!");
         }
 
         // Fecha os modais se clicar fora deles
@@ -588,7 +633,9 @@
             });
         });
 
-        // --- CARREGAMENTO INICIAL DO DASHBOARD ---
+        // ==========================================
+        // 3. CARREGAMENTO DO DASHBOARD
+        // ==========================================
         window.addEventListener('DOMContentLoaded', async () => {
             const logado = sessionStorage.getItem('membro_logado');
             if (!logado) return window.location.href = 'login.html';
@@ -600,28 +647,24 @@
             document.getElementById('passaporte-membro').innerText = membroLogado.passaporte;
             document.getElementById('avatar-inicial').innerText = membroLogado.nome.charAt(0).toUpperCase();
 
-            // Carrega os dados do banco
             const { data, error } = await sb.from('membros')
                 .select('xp_total, foto_url, advertencias')
                 .eq('passaporte', membroLogado.passaporte)
                 .single();
 
-            if (data && !error) {
-                atualizarInterfacePerfil(data);
-            }
+            if (data && !error) atualizarInterfacePerfil(data);
 
             // Puxa as funções paralelas
             carregarAvisos();
             verificarTicketRecente(membroLogado.passaporte);
             carregarPresencasEFaltas(membroLogado.passaporte);
             
-            // Verifica se o usuário já permitiu notificações antes
+            // Verifica permissão de notificação
             if (Notification.permission === 'granted') {
                 document.getElementById('switch-notificacao').checked = true;
             }
         });
 
-        // --- FUNÇÕES DO PERFIL E MÉTRICAS ---
         function atualizarInterfacePerfil(data) {
             const xp = data.xp_total || 0;
             document.getElementById('xp-texto').innerText = `${xp} / 1000`;
@@ -635,7 +678,7 @@
             document.getElementById('kpi-advertencias').innerText = data.advertencias || 0;
 
             if (data.foto_url) {
-                const urlLimpa = data.foto_url.replace(/["']/g, '').trim();
+                const urlLimpa = data.foto_url;
                 const avatar = document.getElementById('avatar-inicial');
                 avatar.style.backgroundImage = `url('${urlLimpa}')`;
                 avatar.innerText = ''; 
@@ -659,7 +702,9 @@
             const { data, error } = await sb.from('avisos').select('*').order('criado_em', { ascending: false }).limit(3);
 
             if (error || !data || data.length === 0) return;
-            document.getElementById('notif-aviso').style.display = 'block';
+            
+            // Liga o sino de notificação porque tem aviso novo
+            document.getElementById('notif-aviso').style.display = 'inline-block';
 
             let html = '';
             data.forEach(aviso => {
@@ -693,7 +738,7 @@
             let html = '';
             data.forEach(m => {
                 const inicial = m.nome.charAt(0).toUpperCase();
-                const foto = m.foto_url ? m.foto_url.replace(/["']/g, '').trim() : null;
+                const foto = m.foto_url ? m.foto_url : null;
                 const avatarStyle = foto ? `background-image: url('${foto}'); background-size: cover; background-position: center;` : '';
                 html += `
                     <div class="membro-card">
@@ -708,100 +753,102 @@
             container.innerHTML = html;
         }
 
+        // ==========================================
+        // 4. TICKETS (PONTO 9)
+        // ==========================================
         async function verificarTicketRecente(passaporte) {
             const { data, error } = await sb.from('tickets').select('*').eq('passaporte', passaporte).order('criado_em', { ascending: false }).limit(1).single();
+            
+            // Se não tem ticket, não faz nada (mantém "Nenhum ticket aberto")
             if (error || !data) return;
 
             const statusText = document.getElementById('status-ticket');
-            if (data.status === 'em_andamento' || data.lider_assumiu) {
+            const sino = document.getElementById('notif-ticket');
+
+            if (data.status === 'em_andamento' && data.lider_assumiu) {
                 statusText.innerText = "Líder assumiu o ticket!";
                 statusText.style.color = "#eab308";
-                document.getElementById('notif-ticket').style.display = 'block';
+                sino.style.display = 'block'; // Liga o sino
             } else {
                 statusText.innerText = "Ticket aberto (aguardando)";
                 statusText.style.color = "var(--texto-mutado)";
+                sino.style.display = 'none'; // Desliga o sino
             }
         }
 
         // ==========================================
-        // AQUI COMEÇAM AS FUNÇÕES DA ENGRENAGEM
+        // 5. FUNÇÕES DA ENGRENAGEM
         // ==========================================
+        
+        // Alterar Foto (Ponto 1 - Galeria)
+        async function processarFoto(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
 
-        // 1. Trocar a Foto de Perfil
-        async function alterarFoto() {
-            const novaUrl = prompt("Cole o link da nova foto (URL):");
-            if (!novaUrl) return; // Se cancelar, para aqui
+                reader.onload = async function(e) {
+                    const base64String = e.target.result;
 
-            // Atualiza no banco de dados
-            const { error } = await sb.from('membros').update({ foto_url: novaUrl }).eq('passaporte', membroLogado.passaporte);
+                    // Salva no banco como Base64
+                    const { error } = await sb.from('membros').update({ foto_url: base64String }).eq('passaporte', membroLogado.passaporte);
 
-            if (!error) {
-                alert("Foto atualizada com sucesso!");
-                // Atualiza na tela sem precisar recarregar
-                const avatar = document.getElementById('avatar-inicial');
-                avatar.style.backgroundImage = `url('${novaUrl}')`;
-                avatar.innerText = '';
-            } else {
-                alert("Erro ao atualizar a foto. Verifique o link.");
+                    if (!error) {
+                        customAlert("Foto atualizada com sucesso!");
+                        const avatar = document.getElementById('avatar-inicial');
+                        avatar.style.backgroundImage = `url('${base64String}')`;
+                        avatar.innerText = '';
+                    } else {
+                        customAlert("Erro ao salvar foto.", "erro");
+                    }
+                };
+                reader.readAsDataURL(file);
             }
         }
 
-        // 2. Notificações no Navegador (Mágica do Push)
+        // Notificações (Ponto 3 e 10)
         async function toggleNotificacoes(checkbox) {
             if (checkbox.checked) {
                 const permissao = await Notification.requestPermission();
                 if (permissao === 'granted') {
-                    alert("Notificações ativadas com sucesso!");
+                    customAlert("Notificações ativadas!");
                     new Notification("Portal Itália", {
-                        body: "Você receberá alertas de avisos e tickets aqui.",
+                        body: "Você receberá alertas aqui.",
                         icon: "https://cdn-icons-png.flaticon.com/512/281/281764.png"
                     });
                 } else {
-                    alert("Você negou as notificações. Vá nas configurações do navegador para liberar.");
+                    customAlert("Permissão negada pelo navegador.", "erro");
                     checkbox.checked = false;
                 }
             }
         }
 
-        // 3. Desligar as Partículas (Economia de bateria)
         function toggleParticulas(checkbox) {
-            const particulas = document.querySelectorAll('.particula');
-            particulas.forEach(p => {
-                if (checkbox.checked) {
-                    p.style.display = 'block'; // Liga de novo
-                } else {
-                    p.style.display = 'none'; // Esconde
-                }
+            document.querySelectorAll('.particula').forEach(p => {
+                p.style.display = checkbox.checked ? 'block' : 'none';
             });
         }
 
-        // 4. Modo Performance (Desliga o blur, fica mais rápido)
         function togglePerformance(checkbox) {
-            const elementosVidro = document.querySelectorAll('.cartao-perfil, .card-metrica, .card-acao, .painel-avisos, .menu-inferior');
+            const elementosVidro = document.querySelectorAll('.cartao-perfil, .card-metrica, .card-acao, .painel-avisos, .menu-inferior, .modal-conteudo');
             if (checkbox.checked) {
-                // Desliga o blur e deixa o fundo opaco (Modo leve)
-                document.body.style.backgroundColor = '#0a0f0d';
                 elementosVidro.forEach(el => {
                     el.style.backdropFilter = 'none';
                     el.style.webkitBackdropFilter = 'none';
-                    el.style.backgroundColor = '#111613'; // Fundo sólido
+                    el.style.backgroundColor = '#111613';
                 });
-                // Desliga também as partículas automaticamente
                 document.querySelectorAll('.particula').forEach(p => p.style.display = 'none');
                 document.getElementById('switch-particulas').checked = false;
             } else {
-                // Volta ao normal
                 elementosVidro.forEach(el => {
                     el.style.backdropFilter = 'blur(20px)';
                     el.style.webkitBackdropFilter = 'blur(20px)';
-                    el.style.backgroundColor = ''; // Volta pro padrão do CSS (vidro)
+                    el.style.backgroundColor = '';
                 });
                 document.querySelectorAll('.particula').forEach(p => p.style.display = 'block');
                 document.getElementById('switch-particulas').checked = true;
             }
         }
 
-        // 5. Sair do Sistema
         function sair() {
             sessionStorage.removeItem('membro_logado');
             window.location.href = 'login.html';
