@@ -292,54 +292,51 @@
     btn.querySelector('span').innerText = 'Autenticando...';
     erroEl.classList.remove('ativa');
 
-    // Puxa todos os membros (seguro para uma facção pequena/média)
-    const { data, error } = await sb.from('membros').select('*');
+    try {
+        // Busca direta e otimizada (só as colunas necessárias)
+        const { data, error } = await sb.from('membros')
+            .select('nome, cargo, senha_credencial, passaporte, foto_url')
+            .eq('passaporte', String(passaporte).trim())
+            .single();
 
-    if (error) {
-        erroEl.innerText = 'Erro de conexão com o banco.';
+        if (error || !data) {
+            erroEl.innerText = 'Passaporte não encontrado no sistema.';
+            erroEl.classList.add('ativa');
+            btn.disabled = false;
+            btn.querySelector('span').innerText = 'Entrar no Sistema';
+            return;
+        }
+
+        // Verifica a senha
+        if (String(data.senha_credencial).trim() !== String(senha).trim()) {
+            erroEl.innerText = 'Senha incorreta. Tente novamente.';
+            erroEl.classList.add('ativa');
+            btn.disabled = false;
+            btn.querySelector('span').innerText = 'Entrar no Sistema';
+            return;
+        }
+
+        // Salva a sessão com a foto
+        sessionStorage.setItem('membro_logado', JSON.stringify({
+            nome: data.nome,
+            passaporte: data.passaporte,
+            cargo: data.cargo,
+            foto_url: data.foto_url
+        }));
+
+        // Muda visual do botão e redireciona instantaneamente
+        btn.querySelector('span').innerText = 'Acesso Liberado!';
+        btn.style.background = '#166534';
+        btn.style.color = '#86efac';
+        
+        window.location.href = 'dashboard.html';
+
+    } catch (err) {
+        erroEl.innerText = 'Erro de conexão. Verifique sua internet.';
         erroEl.classList.add('ativa');
         btn.disabled = false;
         btn.querySelector('span').innerText = 'Entrar no Sistema';
-        return;
     }
-
-    // Procura o membro na lista
-    const membroEncontrado = data.find(m => String(m.passaporte).trim() === String(passaporte).trim());
-
-    if (!membroEncontrado) {
-        erroEl.innerText = 'Passaporte não encontrado no sistema.';
-        erroEl.classList.add('ativa');
-        btn.disabled = false;
-        btn.querySelector('span').innerText = 'Entrar no Sistema';
-        return;
-    }
-
-    // Verifica a senha
-    if (String(membroEncontrado.senha_credencial).trim() !== String(senha).trim()) {
-        erroEl.innerText = 'Senha incorreta. Tente novamente.';
-        erroEl.classList.add('ativa');
-        btn.disabled = false;
-        btn.querySelector('span').innerText = 'Entrar no Sistema';
-        return;
-    }
-
-    // Login OK — salva sessão
-    sessionStorage.setItem('membro_logado', JSON.stringify({
-        nome: membroEncontrado.nome,
-        passaporte: membroEncontrado.passaporte,
-        cargo: membroEncontrado.cargo
-    }));
-
-    const CARGOS_LIDERANCA = ['Líder da organização', '01 da organização', 'Coordenador', 'Gerente geral', 'Gerente'];
-    const ehLideranca = CARGOS_LIDERANCA.includes(membroEncontrado.cargo);
-    
-    btn.querySelector('span').innerText = 'Bem-vindo!';
-    btn.style.background = '#166534';
-    btn.style.color = '#86efac';
-
-    setTimeout(() => {
-    window.location.href = 'dashboard.html';
-}, 900);
         }
     </script>
 </body>
