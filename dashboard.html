@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0f0d">
+    <meta name="color-scheme" content="dark">
     <title>Itália 2.0 | Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -16,7 +18,9 @@
     </script>
 
     <style>
+        /* FORÇA O NAVEGADOR A USAR MODO ESCURO (Ajuda na barra do Chrome) */
         :root {
+            color-scheme: dark;
             --verde: #22c55e;
             --fundo: #0a0f0d;
             --vidro: rgba(15, 23, 20, 0.6);
@@ -26,6 +30,8 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        html { background-color: #0a0f0d; } /* Fundo escuro pra barra do navegador */
 
         body {
             background-color: var(--fundo);
@@ -80,6 +86,7 @@
             position: relative;
             z-index: 10;
             margin-top: 20px;
+            padding-bottom: 40px;
         }
 
         /* CARTÃO DE PERFIL */
@@ -144,6 +151,34 @@
         .metrica-valor { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
         .metrica-sub { font-size: 10px; color: rgba(255,255,255,0.3); }
 
+        /* PAINEL DE AVISOS */
+        .painel-avisos {
+            background: var(--vidro);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .painel-topo h3 {
+            font-family: 'Oswald', sans-serif; font-size: 16px; letter-spacing: 1px;
+            text-transform: uppercase; color: #fff;
+            border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;
+        }
+        .lista-avisos { display: flex; flex-direction: column; gap: 10px; }
+        .aviso-item {
+            background: rgba(0,0,0,0.3); border-left: 3px solid var(--verde);
+            padding: 15px; border-radius: 0 8px 8px 0; transition: 0.3s;
+        }
+        .aviso-item:hover { background: rgba(0,0,0,0.5); }
+        .aviso-titulo { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+        .aviso-texto { font-size: 12px; color: var(--texto-mutado); line-height: 1.5; }
+        .aviso-data { font-size: 10px; color: rgba(255,255,255,0.2); margin-top: 8px; display: block; text-transform: uppercase; font-weight: 600;}
+        .aviso-vazio { font-size: 13px; color: var(--texto-mutado); text-align: center; padding: 10px 0; }
+
         /* NO CELULAR */
         @media (max-width: 600px) {
             .container-principal { gap: 10px; margin-top: 10px; }
@@ -156,9 +191,12 @@
             .grid-metricas { gap: 8px; }
             .card-metrica { padding: 10px; border-radius: 10px; }
             .metrica-topo { font-size: 8px; flex-direction: column; align-items: flex-start; gap: 3px; }
-            .metrica-topo i { display: none; } /* Esconde o ícone no celular pra não amassar */
+            .metrica-topo i { display: none; }
             .metrica-valor { font-size: 22px; }
             .metrica-sub { font-size: 8px; line-height: 1.1; display: block;}
+            
+            .painel-avisos { padding: 15px; }
+            .aviso-item { padding: 12px; }
         }
     </style>
 </head>
@@ -213,6 +251,16 @@
                 <div class="metrica-sub">Punições</div>
             </div>
         </div>
+
+        <!-- MURAL DE AVISOS -->
+        <div class="painel-avisos">
+            <div class="painel-topo">
+                <h3><i class="fas fa-bullhorn" style="color: var(--verde); margin-right: 8px;"></i> Comunicados</h3>
+            </div>
+            <div id="lista-avisos" class="lista-avisos">
+                <p class="aviso-vazio">Nenhum aviso recente.</p>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -251,7 +299,41 @@
                     avatar.innerText = ''; 
                 }
             }
+
+            // Chama a função dos avisos
+            carregarAvisos();
         });
+
+        async function carregarAvisos() {
+            const container = document.getElementById('lista-avisos');
+            
+            // Puxa os 3 últimos avisos da tabela 'avisos'
+            const { data, error } = await sb.from('avisos')
+                .select('*')
+                .order('criado_em', { ascending: false })
+                .limit(3);
+
+            if (error || !data || data.length === 0) {
+                // Se der erro ou não tiver aviso, mantém a mensagem padrão
+                return; 
+            }
+
+            let html = '';
+            data.forEach(aviso => {
+                const titulo = aviso.titulo || 'Aviso da Liderança';
+                const texto = aviso.conteudo || aviso.mensagem || 'Sem detalhes.';
+                
+                html += `
+                    <div class="aviso-item">
+                        <div class="aviso-titulo">${titulo}</div>
+                        <div class="aviso-texto">${texto}</div>
+                        <span class="aviso-data">Recentemente</span>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
     </script>
 </body>
 </html>
