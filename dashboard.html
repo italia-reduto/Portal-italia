@@ -31,8 +31,8 @@
         * { 
             margin: 0; padding: 0; box-sizing: border-box; 
             font-family: 'Inter', sans-serif; 
-            -webkit-tap-highlight-color: transparent; /* Tira a caixa azul de seleção no celular */
-            user-select: none; /* Impede de selecionar texto sem querer */
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         html { background-color: #0a0f0d; }
 
@@ -63,10 +63,12 @@
             mask-image: radial-gradient(circle at center, black 10%, transparent 90%);
             -webkit-mask-image: radial-gradient(circle at center, black 10%, transparent 90%);
         }
+        
+        /* PARTÍCULAS CORRIGIDAS: z-index 5 (na frente do fundo, atrás do conteúdo) */
         .particula {
             position: fixed; bottom: -10px; background-color: var(--verde);
             border-radius: 50%; box-shadow: 0 0 10px var(--verde);
-            opacity: 0; animation: subir linear infinite; z-index: -1;
+            opacity: 0; animation: subir linear infinite; z-index: 5;
         }
         .p1 { width: 3px; height: 3px; left: 10%; animation-duration: 6s; }
         .p2 { width: 4px; height: 4px; left: 30%; animation-duration: 8s; animation-delay: 2s; }
@@ -79,17 +81,11 @@
             100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
 
-        /* CONTAINER PRINCIPAL */
         .container-principal {
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
-            z-index: 10;
-            margin-top: 20px;
-            padding-bottom: 100px;
+            width: 100%; max-width: 800px;
+            display: flex; flex-direction: column; gap: 15px;
+            position: relative; z-index: 10;
+            margin-top: 20px; padding-bottom: 100px;
         }
 
         /* CARTÃO DE PERFIL */
@@ -97,19 +93,15 @@
             background: var(--vidro);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--borda);
-            border-radius: 16px;
-            padding: 25px;
+            border-radius: 16px; padding: 25px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            position: relative; /* Necessário pra engrenagem */
+            display: flex; align-items: center; gap: 20px;
+            position: relative;
         }
         .cartao-perfil::before {
             content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
             background: var(--verde); border-radius: 16px 0 0 16px;
         }
-
         .avatar {
             width: 80px; height: 80px; border-radius: 50%;
             border: 2px solid var(--verde); background: #000;
@@ -123,17 +115,14 @@
         .nome { font-family: 'Oswald', sans-serif; font-size: 26px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
         .cargo { font-size: 13px; color: var(--verde); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
         .passaporte { font-size: 12px; color: var(--texto-mutado); }
-        
         .xp-container { margin-top: 10px; }
         .xp-textos { display: flex; justify-content: space-between; font-size: 10px; color: var(--texto-mutado); margin-bottom: 5px; font-weight: 500;}
         .xp-textos span:last-child { color: var(--verde); font-weight: bold;}
         .xp-barra-bg { width: 100%; height: 4px; background: rgba(0,0,0,0.5); border-radius: 10px; overflow: hidden; }
         .xp-barra-preenchida { height: 100%; background: var(--verde); width: 0%; box-shadow: 0 0 10px var(--verde); transition: width 1s ease; }
 
-        /* BOTÃO DE CONFIGURAÇÕES (Dentro do Perfil) */
         .btn-config {
-            position: absolute;
-            top: 15px; right: 15px;
+            position: absolute; top: 15px; right: 15px;
             width: 35px; height: 35px;
             background: rgba(0,0,0,0.3);
             border: 1px solid var(--borda); border-radius: 50%;
@@ -142,23 +131,17 @@
             cursor: pointer; z-index: 10; transition: 0.3s;
         }
         .btn-config:hover { color: var(--verde); border-color: var(--verde); transform: rotate(90deg); }
-                /* MÉTRICAS */
-        .grid-metricas {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
+
+        /* MÉTRICAS */
+        .grid-metricas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .card-metrica {
             background: var(--vidro);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--borda);
-            border-radius: 12px;
-            padding: 15px;
-            text-align: left;
-            transition: 0.3s;
+            border: 1px solid var(--borda); border-radius: 12px;
+            padding: 15px; text-align: left; transition: 0.3s;
         }
         .metrica-topo {
-            font-size: 10px; font-weight: 600; text-transform: uppercase;
+            font-size: 11px; font-weight: 600; text-transform: uppercase;
             color: var(--texto-mutado); display: flex; justify-content: space-between;
             align-items: center; margin-bottom: 5px;
         }
@@ -169,13 +152,9 @@
         .painel-avisos {
             background: var(--vidro);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--borda);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 5px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            border: 1px solid var(--borda); border-radius: 12px;
+            padding: 20px; margin-top: 5px;
+            display: flex; flex-direction: column; gap: 15px;
         }
         .painel-topo h3 {
             font-family: 'Oswald', sans-serif; font-size: 16px; letter-spacing: 1px;
@@ -187,9 +166,22 @@
             background: rgba(0,0,0,0.3); border-left: 3px solid var(--verde);
             padding: 15px; border-radius: 0 8px 8px 0; transition: 0.3s;
         }
-        .aviso-item:hover { background: rgba(0,0,0,0.5); }
         .aviso-texto { font-size: 13px; color: #fff; line-height: 1.5; }
         .aviso-vazio { font-size: 13px; color: var(--texto-mutado); text-align: center; padding: 10px 0; }
+
+        /* NOVO: GRID DE AÇÕES RÁPIDAS */
+        .grid-acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .card-acao {
+            background: var(--vidro);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--borda); border-radius: 12px;
+            padding: 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .card-acao:hover { border-color: rgba(34, 197, 94, 0.5); background: rgba(34, 197, 94, 0.05); }
+        .card-acao i { font-size: 24px; color: var(--verde); }
+        .card-acao span { font-family: 'Oswald', sans-serif; font-size: 14px; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+        .card-acao p { font-size: 11px; color: var(--texto-mutado); }
 
         /* MENU INFERIOR FLUTUANTE */
         .menu-inferior {
@@ -201,25 +193,16 @@
             padding: 10px 20px; width: 90%; max-width: 400px;
             z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        
-        /* CLASSE DO ITEM DO MENU */
         .item-menu {
             display: flex; flex-direction: column; align-items: center; gap: 5px;
             text-decoration: none; color: var(--texto-mutado); font-size: 10px;
             font-weight: 500; transition: 0.3s; padding: 5px 10px; border-radius: 10px;
-            cursor: pointer;
-            border: 1px solid transparent; /* Evita que o layout pule quando selecionado */
+            cursor: pointer; border: 1px solid transparent;
         }
         .item-menu i { font-size: 18px; }
-        
-        /* A MARCAÇÃO BONITA DO BOTÃO ATIVO */
-        .item-menu.ativo { 
-            color: var(--verde); 
-            background: rgba(34, 197, 94, 0.1); 
-            border: 1px solid rgba(34, 197, 94, 0.2); 
-        }
+        .item-menu.ativo { color: var(--verde); background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); }
 
-        /* NO CELULAR */
+        /* CELULAR */
         @media (max-width: 600px) {
             .cartao-perfil { padding: 15px; gap: 15px; border-radius: 12px; }
             .avatar { width: 60px; height: 60px; font-size: 24px; }
@@ -229,13 +212,16 @@
             
             .grid-metricas { gap: 8px; }
             .card-metrica { padding: 10px; border-radius: 10px; }
-            .metrica-topo { font-size: 8px; flex-direction: column; align-items: flex-start; gap: 3px; }
-            .metrica-topo i { display: none; }
+            /* REMOVIDO O DISPLAY NONE DOS ÍCONES E AJUSTADO O TAMANHO */
+            .metrica-topo { font-size: 9px; align-items: flex-start; gap: 5px; flex-direction: column; }
+            .metrica-topo i { font-size: 12px; }
             .metrica-valor { font-size: 22px; }
             .metrica-sub { font-size: 8px; line-height: 1.1; display: block;}
             
             .painel-avisos { padding: 15px; }
             .aviso-item { padding: 12px; }
+            
+            .grid-acoes { grid-template-columns: 1fr; } /* No celular, um embaixo do outro */
         }
     </style>
 </head>
@@ -252,7 +238,6 @@
     <main class="container-principal">
         <!-- CARTÃO DE PERFIL -->
         <div class="cartao-perfil">
-            <!-- Engrenagem agora fica DENTRO do card e rola junto com a tela -->
             <div class="btn-config" onclick="alert('Configurações em breve')">
                 <i class="fas fa-cog"></i>
             </div>
@@ -296,6 +281,20 @@
             </div>
         </div>
 
+        <!-- NOVO: AÇÕES RÁPIDAS -->
+        <div class="grid-acoes">
+            <div class="card-acao" onclick="alert('Abrir Tickets em breve')">
+                <i class="fas fa-headset"></i>
+                <span>Abrir Ticket</span>
+                <p>Precisa de ajuda da liderança?</p>
+            </div>
+            <div class="card-acao" onclick="alert('Ver equipe em breve')">
+                <i class="fas fa-users"></i>
+                <span>Ver Equipe</span>
+                <p>Quem está na ativa hoje?</p>
+            </div>
+        </div>
+
         <!-- MURAL DE AVISOS -->
         <div class="painel-avisos">
             <div class="painel-topo">
@@ -309,7 +308,6 @@
 
     <!-- MENU INFERIOR FLUTUANTE -->
     <nav class="menu-inferior">
-        <!-- O onclick="mudarMenu(this)" é a mágica que deixa só um verde -->
         <a href="#" class="item-menu ativo" onclick="mudarMenu(this); return false;">
             <i class="fas fa-home"></i>
             <span>Início</span>
@@ -330,15 +328,11 @@
 
     <!-- SCRIPT -->
     <script>
-        // FUNÇÃO PRA DEIXAR SÓ UM BOTÃO VERDE POR VEZ
         function mudarMenu(elementoClicado) {
-            // 1. Remove a classe 'ativo' de todos os botões
             document.querySelectorAll('.item-menu').forEach(btn => btn.classList.remove('ativo'));
-            // 2. Adiciona a classe 'ativo' apenas no botão que foi clicado
             elementoClicado.classList.add('ativo');
         }
 
-        // CARREGAR DADOS DO BANCO
         window.addEventListener('DOMContentLoaded', async () => {
             const logado = sessionStorage.getItem('membro_logado');
             if (!logado) return window.location.href = 'login.html';
@@ -413,4 +407,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
