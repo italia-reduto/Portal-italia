@@ -32,9 +32,9 @@
             color: var(--texto);
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
-            padding: 30px 20px;
+            padding: 20px;
             position: relative;
             overflow-x: hidden;
         }
@@ -70,96 +70,100 @@
             100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
 
-        /* CONTAINER PRINCIPAL */
+        /* CONTAINER */
         .container-principal {
             width: 100%;
-            max-width: 700px;
+            max-width: 800px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             position: relative;
             z-index: 10;
+            margin-top: 20px;
         }
 
-        /* O CARTÃO DE PERFIL */
+        /* CARTÃO DE PERFIL */
         .cartao-perfil {
             background: var(--vidro);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--borda);
             border-radius: 16px;
-            padding: 40px 30px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(34, 197, 94, 0.05);
-            text-align: center;
+            padding: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 20px;
             position: relative;
-            animation: aparecer 0.8s ease forwards;
         }
         .cartao-perfil::before {
-            content: '';
-            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-            width: 50%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--verde), transparent);
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--verde); border-radius: 16px 0 0 16px;
         }
+
         .avatar {
-            width: 90px; height: 90px;
-            border-radius: 50%;
-            border: 2px solid var(--verde);
-            background: #000;
-            margin: 0 auto 15px auto;
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 2px solid var(--verde); background: #000;
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Oswald', sans-serif; font-size: 36px; font-weight: bold; color: var(--verde);
+            font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: bold; color: var(--verde);
             box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
             background-size: cover; background-position: center;
+            flex-shrink: 0;
         }
-        .nome { font-family: 'Oswald', sans-serif; font-size: 28px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .cargo { font-size: 14px; color: var(--verde); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .passaporte { font-size: 13px; color: var(--texto-mutado); }
         
-        .xp-container { margin-top: 30px; text-align: left; }
-        .xp-textos { display: flex; justify-content: space-between; font-size: 12px; color: var(--texto-mutado); margin-bottom: 8px; font-weight: 500;}
+        .info-perfil { flex: 1; }
+        .nome { font-family: 'Oswald', sans-serif; font-size: 26px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+        .cargo { font-size: 13px; color: var(--verde); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+        .passaporte { font-size: 12px; color: var(--texto-mutado); }
+        
+        .xp-container { margin-top: 10px; }
+        .xp-textos { display: flex; justify-content: space-between; font-size: 10px; color: var(--texto-mutado); margin-bottom: 5px; font-weight: 500;}
         .xp-textos span:last-child { color: var(--verde); font-weight: bold;}
-        .xp-barra-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.5); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .xp-barra-bg { width: 100%; height: 4px; background: rgba(0,0,0,0.5); border-radius: 10px; overflow: hidden; }
         .xp-barra-preenchida { height: 100%; background: var(--verde); width: 0%; box-shadow: 0 0 10px var(--verde); transition: width 1s ease; }
 
-        /* CARDS DE MÉTRICAS */
+        /* MÉTRICAS */
         .grid-metricas {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 10px;
         }
         .card-metrica {
             background: var(--vidro);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--borda);
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             text-align: left;
             transition: 0.3s;
         }
-        .card-metrica:hover {
-            border-color: rgba(34, 197, 94, 0.4);
-            transform: translateY(-2px);
-        }
         .metrica-topo {
-            font-size: 11px; font-weight: 600; text-transform: uppercase;
+            font-size: 10px; font-weight: 600; text-transform: uppercase;
             color: var(--texto-mutado); display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: 10px;
+            align-items: center; margin-bottom: 5px;
         }
-        .metrica-valor { font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 5px; }
-        .metrica-sub { font-size: 11px; color: rgba(255,255,255,0.3); }
+        .metrica-valor { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
+        .metrica-sub { font-size: 10px; color: rgba(255,255,255,0.3); }
 
-        @keyframes aparecer { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
+        /* NO CELULAR */
         @media (max-width: 600px) {
-            .cartao-perfil { padding: 30px 20px; }
-            .nome { font-size: 24px; }
-            .avatar { width: 75px; height: 75px; font-size: 30px; }
-            .grid-metricas { grid-template-columns: 1fr; } /* No celular, um embaixo do outro */
+            .container-principal { gap: 10px; margin-top: 10px; }
+            .cartao-perfil { padding: 15px; gap: 15px; border-radius: 12px; }
+            .avatar { width: 60px; height: 60px; font-size: 24px; }
+            .nome { font-size: 20px; }
+            .cargo { font-size: 11px; }
+            .passaporte { font-size: 10px; }
+            
+            .grid-metricas { gap: 8px; }
+            .card-metrica { padding: 10px; border-radius: 10px; }
+            .metrica-topo { font-size: 8px; flex-direction: column; align-items: flex-start; gap: 3px; }
+            .metrica-topo i { display: none; } /* Esconde o ícone no celular pra não amassar */
+            .metrica-valor { font-size: 22px; }
+            .metrica-sub { font-size: 8px; line-height: 1.1; display: block;}
         }
     </style>
 </head>
 <body>
+    <!-- FUNDO -->
     <div class="fundo-degrade"></div>
     <div class="grade-fundo"></div>
     <div class="particula p1"></div>
@@ -169,42 +173,44 @@
     <div class="particula p5"></div>
 
     <main class="container-principal">
-        <!-- CARTÃO DE IDENTIDADE -->
+        <!-- PERFIL -->
         <div class="cartao-perfil">
             <div class="avatar" id="avatar-inicial">?</div>
-            <h1 class="nome" id="nome-membro">Carregando...</h1>
-            <p class="cargo" id="cargo-membro">---</p>
-            <p class="passaporte">Passaporte: <span id="passaporte-membro" style="color: #fff;">---</span></p>
-            
-            <div class="xp-container">
-                <div class="xp-textos">
-                    <span>Progresso</span>
-                    <span id="xp-texto">0 / 1000 XP</span>
-                </div>
-                <div class="xp-barra-bg">
-                    <div class="xp-barra-preenchida" id="xp-barra"></div>
+            <div class="info-perfil">
+                <h1 class="nome" id="nome-membro">Carregando...</h1>
+                <p class="cargo" id="cargo-membro">---</p>
+                <p class="passaporte">Passaporte: <span id="passaporte-membro" style="color: #fff;">---</span></p>
+                
+                <div class="xp-container">
+                    <div class="xp-textos">
+                        <span>XP</span>
+                        <span id="xp-texto">0 / 1000</span>
+                    </div>
+                    <div class="xp-barra-bg">
+                        <div class="xp-barra-preenchida" id="xp-barra"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- CARDS DE MÉTRICAS -->
+        <!-- MÉTRICAS -->
         <div class="grid-metricas">
             <div class="card-metrica">
                 <div class="metrica-topo">Presenças <i class="fas fa-check-circle" style="color: #22c55e;"></i></div>
                 <div class="metrica-valor" style="color: #22c55e;" id="kpi-presencas">0</div>
-                <div class="metrica-sub">Total registrado</div>
+                <div class="metrica-sub">Registros</div>
             </div>
             
             <div class="card-metrica">
                 <div class="metrica-topo">Faltas <i class="fas fa-times-circle" style="color: #ef4444;"></i></div>
                 <div class="metrica-valor" style="color: #ef4444;" id="kpi-faltas">0</div>
-                <div class="metrica-sub">Sem justificativa</div>
+                <div class="metrica-sub">Sem Just.</div>
             </div>
 
             <div class="card-metrica">
                 <div class="metrica-topo">Advertências <i class="fas fa-exclamation-triangle" style="color: #eab308;"></i></div>
                 <div class="metrica-valor" style="color: #eab308;" id="kpi-advertencias">0</div>
-                <div class="metrica-sub">Punições ativas</div>
+                <div class="metrica-sub">Punições</div>
             </div>
         </div>
     </main>
@@ -216,22 +222,19 @@
 
             const membro = JSON.parse(logado);
             
-            // Preenche os dados básicos da sessão
             document.getElementById('nome-membro').innerText = membro.nome;
             document.getElementById('cargo-membro').innerText = membro.cargo;
             document.getElementById('passaporte-membro').innerText = membro.passaporte;
             document.getElementById('avatar-inicial').innerText = membro.nome.charAt(0).toUpperCase();
 
-            // Puxa dados atualizados do Supabase (XP, Foto e Advertências)
             const { data, error } = await sb.from('membros')
                 .select('xp_total, foto_url, advertencias')
                 .eq('passaporte', membro.passaporte)
                 .single();
 
             if (data && !error) {
-                // Atualiza o XP e a Barra
                 const xp = data.xp_total || 0;
-                document.getElementById('xp-texto').innerText = `${xp} / 1000 XP`;
+                document.getElementById('xp-texto').innerText = `${xp} / 1000`;
                 let porcentagem = (xp / 1000) * 100;
                 if (porcentagem > 100) porcentagem = 100;
                 
@@ -239,10 +242,8 @@
                     document.getElementById('xp-barra').style.width = porcentagem + "%";
                 }, 300);
 
-                // Atualiza as Advertências
                 document.getElementById('kpi-advertencias').innerText = data.advertencias || 0;
 
-                // Atualiza a Foto
                 if (data.foto_url) {
                     const urlLimpa = data.foto_url.replace(/["']/g, '').trim();
                     const avatar = document.getElementById('avatar-inicial');
