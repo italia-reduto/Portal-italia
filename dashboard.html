@@ -416,158 +416,186 @@
 
     <!-- SCRIPT -->
     <script>
-        function mudarMenu(elementoClicado) {
-            document.querySelectorAll('.item-menu').forEach(btn => btn.classList.remove('ativo'));
-            elementoClicado.classList.add('ativo');
-        }
+    function mudarMenu(elementoClicado) {
+        document.querySelectorAll('.item-menu').forEach(btn => btn.classList.remove('ativo'));
+        elementoClicado.classList.add('ativo');
+    }
 
-        function abrirModalMembros() {
-            document.getElementById('modal-membros').classList.add('ativo');
-            carregarMembrosModal();
-        }
+    function abrirModalMembros() {
+        document.getElementById('modal-membros').classList.add('ativo');
+        carregarMembrosModal();
+    }
 
-        function fecharModalMembros() {
-            document.getElementById('modal-membros').classList.remove('ativo');
-        }
+    function fecharModalMembros() {
+        document.getElementById('modal-membros').classList.remove('ativo');
+    }
 
-        document.getElementById('modal-membros').addEventListener('click', function(e) {
-            if (e.target === this) fecharModalMembros();
-        });
+    document.getElementById('modal-membros').addEventListener('click', function(e) {
+        if (e.target === this) fecharModalMembros();
+    });
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            const logado = sessionStorage.getItem('membro_logado');
-            if (!logado) return window.location.href = 'login.html';
+    window.addEventListener('DOMContentLoaded', async () => {
+        const logado = sessionStorage.getItem('membro_logado');
+        if (!logado) return window.location.href = 'login.html';
 
-            const membro = JSON.parse(logado);
+        const membro = JSON.parse(logado);
+        
+        document.getElementById('nome-membro').innerText = membro.nome;
+        document.getElementById('cargo-membro').innerText = membro.cargo;
+        document.getElementById('passaporte-membro').innerText = membro.passaporte;
+        document.getElementById('avatar-inicial').innerText = membro.nome.charAt(0).toUpperCase();
+
+        const { data, error } = await sb.from('membros')
+            .select('xp_total, foto_url, advertencias')
+            .eq('passaporte', membro.passaporte)
+            .single();
+
+        if (data && !error) {
+            const xp = data.xp_total || 0;
+            document.getElementById('xp-texto').innerText = `${xp} / 1000`;
+            let porcentagem = (xp / 1000) * 100;
+            if (porcentagem > 100) porcentagem = 100;
             
-            document.getElementById('nome-membro').innerText = membro.nome;
-            document.getElementById('cargo-membro').innerText = membro.cargo;
-            document.getElementById('passaporte-membro').innerText = membro.passaporte;
-            document.getElementById('avatar-inicial').innerText = membro.nome.charAt(0).toUpperCase();
+            setTimeout(() => {
+                document.getElementById('xp-barra').style.width = porcentagem + "%";
+            }, 300);
 
-            const { data, error } = await sb.from('membros')
-                .select('xp_total, foto_url, advertencias')
-                .eq('passaporte', membro.passaporte)
-                .single();
+            document.getElementById('kpi-advertencias').innerText = data.advertencias || 0;
 
-            if (data && !error) {
-                const xp = data.xp_total || 0;
-                document.getElementById('xp-texto').innerText = `${xp} / 1000`;
-                let porcentagem = (xp / 1000) * 100;
-                if (porcentagem > 100) porcentagem = 100;
-                
-                setTimeout(() => {
-                    document.getElementById('xp-barra').style.width = porcentagem + "%";
-                }, 300);
+            if (data.foto_url) {
+                const urlLimpa = data.foto_url.replace(/["']/g, '').trim();
+                const avatar = document.getElementById('avatar-inicial');
+                avatar.style.backgroundImage = `url('${urlLimpa}')`;
+                avatar.innerText = ''; 
+            }
+        }
 
-                document.getElementById('kpi-advertencias').innerText = data.advertencias || 0;
+        // Puxa os dados extras
+        carregarAvisos();
+        verificarTicketRecente(membro.passaporte);
+        carregarPresencasEFaltas(membro.passaporte); // AQUI CHAMA A NOVA FUNÇÃO
+    });
 
-                if (data.foto_url) {
-                    const urlLimpa = data.foto_url.replace(/["']/g, '').trim();
-                    const avatar = document.getElementById('avatar-inicial');
-                    avatar.style.backgroundImage = `url('${urlLimpa}')`;
-                    avatar.innerText = ''; 
-                }
+    async function carregarAvisos() {
+        const container = document.getElementById('lista-avisos');
+        const { data, error } = await sb.from('avisos')
+            .select('*')
+            .order('criado_em', { ascending: false })
+            .limit(3);
+
+        if (error || !data || data.length === 0) return;
+
+        document.getElementById('notif-aviso').style.display = 'block';
+
+        let html = '';
+        data.forEach(aviso => {
+            const textoAviso = aviso.texto || 'Sem detalhes.';
+            const autorAviso = aviso.autor || 'Liderança';
+            
+            let dataFormatada = 'Recentemente';
+            if (aviso.criado_em) {
+                const dataObj = new Date(aviso.criado_em);
+                dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
             }
 
-            carregarAvisos();
-            verificarTicketRecente(membro.passaporte);
+            html += `
+                <div class="aviso-item">
+                    <div class="aviso-texto">${textoAviso}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; margin-top: 8px;">
+                        <span style="font-size: 11px; color: var(--verde); font-weight: 600;"><i class="fas fa-user-shield"></i> ${autorAviso}</span>
+                        <span style="font-size: 10px; color: rgba(255,255,255,0.2); font-weight: 600; text-transform: uppercase;">${dataFormatada}</span>
+                    </div>
+                </div>
+            `;
         });
+        
+        container.innerHTML = html;
+    }
 
-        async function carregarAvisos() {
-            const container = document.getElementById('lista-avisos');
-            const { data, error } = await sb.from('avisos')
-                .select('*')
-                .order('criado_em', { ascending: false })
-                .limit(3);
+    async function carregarMembrosModal() {
+        const container = document.getElementById('lista-membros-modal');
+        const { data, error } = await sb.from('membros')
+            .select('nome, cargo, passaporte, foto_url')
+            .order('nome', { ascending: true });
 
-            if (error || !data || data.length === 0) return;
-
-            document.getElementById('notif-aviso').style.display = 'block';
-
-            let html = '';
-            data.forEach(aviso => {
-                const textoAviso = aviso.texto || 'Sem detalhes.';
-                const autorAviso = aviso.autor || 'Liderança';
-                
-                let dataFormatada = 'Recentemente';
-                if (aviso.criado_em) {
-                    const dataObj = new Date(aviso.criado_em);
-                    dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
-                }
-
-                html += `
-                    <div class="aviso-item">
-                        <div class="aviso-texto">${textoAviso}</div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; margin-top: 8px;">
-                            <span style="font-size: 11px; color: var(--verde); font-weight: 600;"><i class="fas fa-user-shield"></i> ${autorAviso}</span>
-                            <span style="font-size: 10px; color: rgba(255,255,255,0.2); font-weight: 600; text-transform: uppercase;">${dataFormatada}</span>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
+        if (error || !data || data.length === 0) {
+            container.innerHTML = '<p class="aviso-vazio">Nenhum membro encontrado.</p>';
+            return;
         }
 
-        async function carregarMembrosModal() {
-            const container = document.getElementById('lista-membros-modal');
+        let html = '';
+        data.forEach(m => {
+            const inicial = m.nome.charAt(0).toUpperCase();
+            const foto = m.foto_url ? m.foto_url.replace(/["']/g, '').trim() : null;
+            const avatarStyle = foto ? `background-image: url('${foto}'); background-size: cover; background-position: center;` : '';
             
-            const { data, error } = await sb.from('membros')
-                .select('nome, cargo, passaporte, foto_url')
-                .order('nome', { ascending: true });
-
-            if (error || !data || data.length === 0) {
-                container.innerHTML = '<p class="aviso-vazio">Nenhum membro encontrado.</p>';
-                return;
-            }
-
-            let html = '';
-            data.forEach(m => {
-                const inicial = m.nome.charAt(0).toUpperCase();
-                const foto = m.foto_url ? m.foto_url.replace(/["']/g, '').trim() : null;
-                const avatarStyle = foto ? `background-image: url('${foto}'); background-size: cover; background-position: center;` : '';
-                
-                html += `
-                    <div class="membro-card">
-                        <div class="membro-info">
-                            <div class="membro-avatar" style="${avatarStyle}">
-                                ${foto ? '' : inicial}
-                            </div>
-                            <div class="membro-dados">
-                                <h4>${m.nome}</h4>
-                                <p>Passaporte: ${m.passaporte} • ${m.cargo}</p>
-                            </div>
+            html += `
+                <div class="membro-card">
+                    <div class="membro-info">
+                        <div class="membro-avatar" style="${avatarStyle}">${foto ? '' : inicial}</div>
+                        <div class="membro-dados">
+                            <h4>${m.nome}</h4>
+                            <p>Passaporte: ${m.passaporte} • ${m.cargo}</p>
                         </div>
-                        <div class="status-online"></div>
                     </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
+                    <div class="status-online"></div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    }
 
-        async function verificarTicketRecente(passaporte) {
-            const { data, error } = await sb.from('tickets')
-                .select('*')
+    async function verificarTicketRecente(passaporte) {
+        const { data, error } = await sb.from('tickets')
+            .select('*')
+            .eq('passaporte', passaporte)
+            .order('criado_em', { ascending: false })
+            .limit(1)
+            .single();
+
+        if (error || !data) return;
+
+        const statusText = document.getElementById('status-ticket');
+        if (data.status === 'em_andamento' || data.lider_assumiu) {
+            statusText.innerText = "Líder assumiu o ticket!";
+            statusText.style.color = "#eab308";
+            document.getElementById('notif-ticket').style.display = 'block';
+        } else {
+            statusText.innerText = "Ticket aberto (aguardando)";
+            statusText.style.color = "var(--texto-mutado)";
+        }
+    }
+
+    // A NOVA FUNÇÃO AQUI (Puxa Presenças e Faltas)
+    async function carregarPresencasEFaltas(passaporte) {
+        try {
+            // Conta presenças
+            const { count: totalPresencas } = await sb
+                .from('presencas')
+                .select('*', { count: 'exact', head: true })
                 .eq('passaporte', passaporte)
-                .order('criado_em', { ascending: false })
-                .limit(1)
-                .single();
+                .eq('status', 'presente');
 
-            if (error || !data) return;
+            // Conta faltas
+            const { count: totalFaltas } = await sb
+                .from('presencas')
+                .select('*', { count: 'exact', head: true })
+                .eq('passaporte', passaporte)
+                .eq('status', 'falta');
 
-            const statusText = document.getElementById('status-ticket');
-            
-            if (data.status === 'em_andamento' || data.lider_assumiu) {
-                statusText.innerText = "Líder assumiu o ticket!";
-                statusText.style.color = "#eab308";
-                document.getElementById('notif-ticket').style.display = 'block';
-            } else {
-                statusText.innerText = "Ticket aberto (aguardando)";
-                statusText.style.color = "var(--texto-mutado)";
+            // Atualiza os números na tela
+            if (totalPresencas !== null) {
+                document.getElementById('kpi-presencas').innerText = totalPresencas;
             }
+            if (totalFaltas !== null) {
+                document.getElementById('kpi-faltas').innerText = totalFaltas;
+            }
+
+        } catch (error) {
+            console.error("Erro ao carregar presenças/faltas:", error);
         }
-    </script>
+    }
+                    </script>
 </body>
 </html>
