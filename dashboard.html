@@ -34,12 +34,7 @@
             -webkit-tap-highlight-color: transparent;
             user-select: none;
         }
-        
-        /* Fix do bug do Chrome Mobile */
-        html { 
-            background-color: #0a0f0d; 
-            overflow-x: hidden;
-        }
+        html { background-color: #0a0f0d; overflow-x: hidden; }
 
         body {
             background-color: var(--fundo);
@@ -87,8 +82,7 @@
             width: 100%; max-width: 800px;
             display: flex; flex-direction: column; gap: 15px;
             position: relative; z-index: 10;
-            margin-top: 20px; 
-            padding-bottom: 120px; /* Evita que o menu cubra o conteúdo final */
+            margin-top: 20px; padding-bottom: 120px;
         }
 
         /* CARTÃO DE PERFIL */
@@ -151,7 +145,8 @@
         .metrica-topo i { font-size: 14px; }
         .metrica-valor { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
         .metrica-sub { font-size: 10px; color: rgba(255,255,255,0.3); }
-                /* AÇÕES RÁPIDAS */
+
+        /* AÇÕES RÁPIDAS */
         .grid-acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .card-acao {
             background: var(--vidro);
@@ -202,7 +197,7 @@
         .aviso-texto { font-size: 13px; color: #fff; line-height: 1.5; font-weight: 600; }
         .aviso-vazio { font-size: 13px; color: var(--texto-mutado); text-align: center; padding: 10px 0; }
 
-        /* MODAL DE MEMBROS */
+        /* MODAIS (MEMBROS E CONFIG) */
         .modal-overlay {
             display: none; position: fixed; inset: 0;
             background: rgba(0,0,0,0.7);
@@ -215,7 +210,7 @@
         .modal-conteudo {
             background: var(--vidro);
             border: 1px solid var(--borda); border-radius: 16px;
-            width: 100%; max-width: 500px; max-height: 80vh;
+            width: 100%; max-width: 500px; max-height: 85vh;
             display: flex; flex-direction: column;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             transform: translateY(20px); transition: transform 0.3s ease;
@@ -226,12 +221,13 @@
             padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);
             display: flex; justify-content: space-between; align-items: center;
         }
-        .modal-header h2 { font-family: 'Oswald', sans-serif; font-size: 20px; color: var(--verde); text-transform: uppercase; }
+        .modal-header h2 { font-family: 'Oswald', sans-serif; font-size: 20px; color: var(--verde); text-transform: uppercase; display: flex; gap: 10px; align-items: center;}
         .btn-fechar { background: transparent; border: none; color: var(--texto-mutado); font-size: 20px; cursor: pointer; }
         .btn-fechar:hover { color: #ef4444; }
         
         .modal-lista { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
         
+        /* MEMBROS */
         .membro-card {
             display: flex; align-items: center; justify-content: space-between;
             background: rgba(0,0,0,0.3); padding: 12px 15px; border-radius: 8px;
@@ -245,26 +241,38 @@
         }
         .membro-dados h4 { font-size: 14px; color: #fff; margin-bottom: 2px; }
         .membro-dados p { font-size: 11px; color: var(--texto-mutado); }
-        
         .status-online { width: 10px; height: 10px; border-radius: 50%; background: var(--verde); box-shadow: 0 0 8px var(--verde); flex-shrink: 0;}
 
-        /* MENU INFERIOR FLUTUANTE (AGORA FIXO DE VERDADE) */
+        /* CONFIGURAÇÕES */
+        .config-secao { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 15px; }
+        .config-secao:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+        .config-titulo { font-family: 'Oswald', sans-serif; font-size: 13px; color: var(--verde); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .config-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; cursor: pointer; }
+        .config-info { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--texto); font-weight: 500; }
+        .config-info i { width: 16px; text-align: center; color: var(--texto-mutado); }
+        .config-select { background: rgba(0,0,0,0.5); border: 1px solid var(--borda); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px; outline: none; }
+        .config-badge { font-size: 11px; background: rgba(34, 197, 94, 0.1); color: var(--verde); padding: 3px 8px; border-radius: 10px; border: 1px solid rgba(34, 197, 94, 0.2); }
+        .btn-config-acao { background: rgba(255,255,255,0.05); border: 1px solid var(--borda); color: #fff; padding: 5px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.3s; }
+        .btn-config-acao:hover { background: var(--verde); color: #000; }
+        .btn-config-acao.perigo { color: #ef4444; border-color: rgba(239,68,68,0.3); }
+        .btn-config-acao.perigo:hover { background: #ef4444; color: #fff; }
+
+        /* SWITCH (ESTILO IPHONE) */
+        .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #27272a; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--verde); }
+        input:checked + .slider:before { transform: translateX(18px); }
+
+        /* MENU INFERIOR FLUTUANTE */
         .menu-inferior {
-            position: fixed; 
-            bottom: 20px; 
-            left: 5%; 
-            right: 5%;
-            margin: 0 auto;
-            max-width: 400px;
-            background: rgba(10, 15, 13, 0.95); /* Fundo mais sólido pra não vazar */
+            position: fixed; bottom: 20px; left: 5%; right: 5%; margin: 0 auto; max-width: 400px;
+            background: rgba(10, 15, 13, 0.95);
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--borda); 
-            border-radius: 25px;
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center;
-            padding: 10px 20px; 
-            z-index: 9999; /* Fica na frente de TUDO */
+            border: 1px solid var(--borda); border-radius: 25px;
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 10px 20px; z-index: 9999;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
         .item-menu {
@@ -283,21 +291,19 @@
             .nome { font-size: 20px; }
             .cargo { font-size: 11px; }
             .passaporte { font-size: 10px; }
-            
             .grid-metricas { gap: 8px; }
             .card-metrica { padding: 10px; border-radius: 10px; }
             .metrica-topo { font-size: 9px; flex-direction: row; align-items: center; }
             .metrica-topo i { font-size: 12px; }
             .metrica-valor { font-size: 22px; }
             .metrica-sub { font-size: 8px; line-height: 1.1; display: block;}
-            
             .grid-acoes { grid-template-columns: 1fr; }
             .painel-avisos { padding: 15px; }
             .aviso-item { padding: 12px; }
         }
     </style>
 </head>
-<body>
+<body id="corpo-site">
     <div class="fundo-degrade"></div>
     <div class="grade-fundo"></div>
     <div class="particula p1"></div>
@@ -309,7 +315,7 @@
     <main class="container-principal">
         <!-- CARTÃO DE PERFIL -->
         <div class="cartao-perfil">
-            <div class="btn-config" onclick="alert('Configurações em breve')">
+            <div class="btn-config" onclick="abrirModalConfig()">
                 <i class="fas fa-cog"></i>
             </div>
 
@@ -394,6 +400,141 @@
         </div>
     </div>
 
+    <!-- MODAL DE CONFIGURAÇÕES (O CÉREBRO DO SISTEMA) -->
+    <div class="modal-overlay" id="modal-config">
+        <div class="modal-conteudo" style="max-width: 450px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-cog"></i> Configurações</h2>
+                <button class="btn-fechar" onclick="fecharModalConfig()"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="modal-lista" style="padding: 15px 20px;">
+                
+                <!-- SEÇÃO 1: PERFIL -->
+                <div class="config-secao">
+                    <h3 class="config-titulo">Perfil e Identidade</h3>
+                    
+                    <div class="config-item" onclick="alterarFoto()">
+                        <div class="config-info">
+                            <i class="fas fa-image"></i>
+                            <span>Alterar Foto de Perfil</span>
+                        </div>
+                        <button class="btn-config-acao">Mudar</button>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="config-info">
+                            <i class="fas fa-circle" style="color: var(--verde);"></i>
+                            <span>Status de Disponibilidade</span>
+                        </div>
+                        <select class="config-select" id="select-status">
+                            <option value="Em Serviço">Em Serviço</option>
+                            <option value="Em Patrulha">Em Patrulha</option>
+                            <option value="Ausente">Ausente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 2: NOTIFICAÇÕES -->
+                <div class="config-secao">
+                    <h3 class="config-titulo">Notificações</h3>
+                    
+                    <div class="config-item">
+                        <div class="config-info">
+                            <i class="fas fa-bell"></i>
+                            <span>Notificações no Navegador</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="switch-notificacao" onchange="toggleNotificacoes(this)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="config-info">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Vibração e Som</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="switch-som" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 3: SEGURANÇA -->
+                <div class="config-secao">
+                    <h3 class="config-titulo">Segurança da Conta</h3>
+                    
+                    <div class="config-item">
+                        <div class="config-info">
+                            <i class="fas fa-laptop"></i>
+                            <span>Sessões Ativas</span>
+                        </div>
+                        <span class="config-badge">1 Dispositivo</span>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="config-info">
+                            <i class="fas fa-sign-out-alt" style="color: #ef4444;"></i>
+                            <span style="color: #ef4444;">Sair de Todos os Dispositivos</span>
+                        </div>
+                        <button class="btn-config-acao perigo" onclick="sair()">Sair</button>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 4: INTERFACE -->
+                <div class="config-secao">
+                    <h3 class="config-titulo">Interface do Sistema</h3>
+                    
+                    <div class="config-item">
+                        <div class="config-info">
+                            <i class="fas fa-magic"></i>
+                            <span>Efeito de Partículas</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="switch-particulas" checked onchange="toggleParticulas(this)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="config-info">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Modo Performance</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="switch-performance" onchange="togglePerformance(this)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 5: AJUDA -->
+                <div class="config-secao">
+                    <h3 class="config-titulo">Central de Ajuda</h3>
+                    
+                    <div class="config-item" onclick="alert('Regras da Organização: 1. Respeito acima de tudo. 2. Proibido RDM/VMD. 3. ...')">
+                        <div class="config-info">
+                            <i class="fas fa-book"></i>
+                            <span>Regras da Organização</span>
+                        </div>
+                        <i class="fas fa-chevron-right" style="color: #52525b;"></i>
+                    </div>
+
+                    <div class="config-item" onclick="window.open('https://discord.gg/SEU_LINK_AQUI', '_blank')">
+                        <div class="config-info">
+                            <i class="fab fa-discord"></i>
+                            <span>Entrar no Discord</span>
+                        </div>
+                        <i class="fas fa-chevron-right" style="color: #52525b;"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- MENU INFERIOR FLUTUANTE -->
     <nav class="menu-inferior">
         <a href="#" class="item-menu ativo" onclick="mudarMenu(this); return false;">
@@ -413,44 +554,75 @@
             <span>Perfil</span>
         </a>
     </nav>
+        <script>
+        // Variável global para guardar o membro logado
+        let membroLogado = null;
 
-    <!-- SCRIPT -->
-    <script>
-    function mudarMenu(elementoClicado) {
-        document.querySelectorAll('.item-menu').forEach(btn => btn.classList.remove('ativo'));
-        elementoClicado.classList.add('ativo');
-    }
+        // --- NAVEGAÇÃO E MENUS ---
+        function mudarMenu(elementoClicado) {
+            document.querySelectorAll('.item-menu').forEach(btn => btn.classList.remove('ativo'));
+            elementoClicado.classList.add('ativo');
+        }
 
-    function abrirModalMembros() {
-        document.getElementById('modal-membros').classList.add('ativo');
-        carregarMembrosModal();
-    }
+        function abrirModalMembros() {
+            document.getElementById('modal-membros').classList.add('ativo');
+            carregarMembrosModal();
+        }
 
-    function fecharModalMembros() {
-        document.getElementById('modal-membros').classList.remove('ativo');
-    }
+        function fecharModalMembros() {
+            document.getElementById('modal-membros').classList.remove('ativo');
+        }
 
-    document.getElementById('modal-membros').addEventListener('click', function(e) {
-        if (e.target === this) fecharModalMembros();
-    });
+        function abrirModalConfig() {
+            document.getElementById('modal-config').classList.add('ativo');
+        }
 
-    window.addEventListener('DOMContentLoaded', async () => {
-        const logado = sessionStorage.getItem('membro_logado');
-        if (!logado) return window.location.href = 'login.html';
+        function fecharModalConfig() {
+            document.getElementById('modal-config').classList.remove('ativo');
+        }
 
-        const membro = JSON.parse(logado);
-        
-        document.getElementById('nome-membro').innerText = membro.nome;
-        document.getElementById('cargo-membro').innerText = membro.cargo;
-        document.getElementById('passaporte-membro').innerText = membro.passaporte;
-        document.getElementById('avatar-inicial').innerText = membro.nome.charAt(0).toUpperCase();
+        // Fecha os modais se clicar fora deles
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('ativo');
+            });
+        });
 
-        const { data, error } = await sb.from('membros')
-            .select('xp_total, foto_url, advertencias')
-            .eq('passaporte', membro.passaporte)
-            .single();
+        // --- CARREGAMENTO INICIAL DO DASHBOARD ---
+        window.addEventListener('DOMContentLoaded', async () => {
+            const logado = sessionStorage.getItem('membro_logado');
+            if (!logado) return window.location.href = 'login.html';
 
-        if (data && !error) {
+            membroLogado = JSON.parse(logado);
+            
+            document.getElementById('nome-membro').innerText = membroLogado.nome;
+            document.getElementById('cargo-membro').innerText = membroLogado.cargo;
+            document.getElementById('passaporte-membro').innerText = membroLogado.passaporte;
+            document.getElementById('avatar-inicial').innerText = membroLogado.nome.charAt(0).toUpperCase();
+
+            // Carrega os dados do banco
+            const { data, error } = await sb.from('membros')
+                .select('xp_total, foto_url, advertencias')
+                .eq('passaporte', membroLogado.passaporte)
+                .single();
+
+            if (data && !error) {
+                atualizarInterfacePerfil(data);
+            }
+
+            // Puxa as funções paralelas
+            carregarAvisos();
+            verificarTicketRecente(membroLogado.passaporte);
+            carregarPresencasEFaltas(membroLogado.passaporte);
+            
+            // Verifica se o usuário já permitiu notificações antes
+            if (Notification.permission === 'granted') {
+                document.getElementById('switch-notificacao').checked = true;
+            }
+        });
+
+        // --- FUNÇÕES DO PERFIL E MÉTRICAS ---
+        function atualizarInterfacePerfil(data) {
             const xp = data.xp_total || 0;
             document.getElementById('xp-texto').innerText = `${xp} / 1000`;
             let porcentagem = (xp / 1000) * 100;
@@ -470,132 +642,170 @@
             }
         }
 
-        // Puxa os dados extras
-        carregarAvisos();
-        verificarTicketRecente(membro.passaporte);
-        carregarPresencasEFaltas(membro.passaporte); // AQUI CHAMA A NOVA FUNÇÃO
-    });
+        async function carregarPresencasEFaltas(passaporte) {
+            try {
+                const { count: totalPresencas } = await sb.from('presencas').select('*', { count: 'exact', head: true }).eq('passaporte', passaporte).eq('status', 'presente');
+                const { count: totalFaltas } = await sb.from('presencas').select('*', { count: 'exact', head: true }).eq('passaporte', passaporte).eq('status', 'falta');
 
-    async function carregarAvisos() {
-        const container = document.getElementById('lista-avisos');
-        const { data, error } = await sb.from('avisos')
-            .select('*')
-            .order('criado_em', { ascending: false })
-            .limit(3);
-
-        if (error || !data || data.length === 0) return;
-
-        document.getElementById('notif-aviso').style.display = 'block';
-
-        let html = '';
-        data.forEach(aviso => {
-            const textoAviso = aviso.texto || 'Sem detalhes.';
-            const autorAviso = aviso.autor || 'Liderança';
-            
-            let dataFormatada = 'Recentemente';
-            if (aviso.criado_em) {
-                const dataObj = new Date(aviso.criado_em);
-                dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+                if (totalPresencas !== null) document.getElementById('kpi-presencas').innerText = totalPresencas;
+                if (totalFaltas !== null) document.getElementById('kpi-faltas').innerText = totalFaltas;
+            } catch (error) {
+                console.error("Erro nas métricas", error);
             }
-
-            html += `
-                <div class="aviso-item">
-                    <div class="aviso-texto">${textoAviso}</div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; margin-top: 8px;">
-                        <span style="font-size: 11px; color: var(--verde); font-weight: 600;"><i class="fas fa-user-shield"></i> ${autorAviso}</span>
-                        <span style="font-size: 10px; color: rgba(255,255,255,0.2); font-weight: 600; text-transform: uppercase;">${dataFormatada}</span>
-                    </div>
-                </div>
-            `;
-        });
-        
-        container.innerHTML = html;
-    }
-
-    async function carregarMembrosModal() {
-        const container = document.getElementById('lista-membros-modal');
-        const { data, error } = await sb.from('membros')
-            .select('nome, cargo, passaporte, foto_url')
-            .order('nome', { ascending: true });
-
-        if (error || !data || data.length === 0) {
-            container.innerHTML = '<p class="aviso-vazio">Nenhum membro encontrado.</p>';
-            return;
         }
 
-        let html = '';
-        data.forEach(m => {
-            const inicial = m.nome.charAt(0).toUpperCase();
-            const foto = m.foto_url ? m.foto_url.replace(/["']/g, '').trim() : null;
-            const avatarStyle = foto ? `background-image: url('${foto}'); background-size: cover; background-position: center;` : '';
-            
-            html += `
-                <div class="membro-card">
-                    <div class="membro-info">
-                        <div class="membro-avatar" style="${avatarStyle}">${foto ? '' : inicial}</div>
-                        <div class="membro-dados">
-                            <h4>${m.nome}</h4>
-                            <p>Passaporte: ${m.passaporte} • ${m.cargo}</p>
+        async function carregarAvisos() {
+            const container = document.getElementById('lista-avisos');
+            const { data, error } = await sb.from('avisos').select('*').order('criado_em', { ascending: false }).limit(3);
+
+            if (error || !data || data.length === 0) return;
+            document.getElementById('notif-aviso').style.display = 'block';
+
+            let html = '';
+            data.forEach(aviso => {
+                const textoAviso = aviso.texto || 'Sem detalhes.';
+                const autorAviso = aviso.autor || 'Liderança';
+                let dataFormatada = 'Recentemente';
+                if (aviso.criado_em) dataFormatada = new Date(aviso.criado_em).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+
+                html += `
+                    <div class="aviso-item">
+                        <div class="aviso-texto">${textoAviso}</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; margin-top: 8px;">
+                            <span style="font-size: 11px; color: var(--verde); font-weight: 600;"><i class="fas fa-user-shield"></i> ${autorAviso}</span>
+                            <span style="font-size: 10px; color: rgba(255,255,255,0.2); font-weight: 600; text-transform: uppercase;">${dataFormatada}</span>
                         </div>
                     </div>
-                    <div class="status-online"></div>
-                </div>
-            `;
-        });
-        
-        container.innerHTML = html;
-    }
-
-    async function verificarTicketRecente(passaporte) {
-        const { data, error } = await sb.from('tickets')
-            .select('*')
-            .eq('passaporte', passaporte)
-            .order('criado_em', { ascending: false })
-            .limit(1)
-            .single();
-
-        if (error || !data) return;
-
-        const statusText = document.getElementById('status-ticket');
-        if (data.status === 'em_andamento' || data.lider_assumiu) {
-            statusText.innerText = "Líder assumiu o ticket!";
-            statusText.style.color = "#eab308";
-            document.getElementById('notif-ticket').style.display = 'block';
-        } else {
-            statusText.innerText = "Ticket aberto (aguardando)";
-            statusText.style.color = "var(--texto-mutado)";
+                `;
+            });
+            container.innerHTML = html;
         }
-    }
 
-    // A NOVA FUNÇÃO AQUI (Puxa Presenças e Faltas)
-    async function carregarPresencasEFaltas(passaporte) {
-        try {
-            // Conta presenças
-            const { count: totalPresencas } = await sb
-                .from('presencas')
-                .select('*', { count: 'exact', head: true })
-                .eq('passaporte', passaporte)
-                .eq('status', 'presente');
+        async function carregarMembrosModal() {
+            const container = document.getElementById('lista-membros-modal');
+            const { data, error } = await sb.from('membros').select('nome, cargo, passaporte, foto_url').order('nome', { ascending: true });
 
-            // Conta faltas
-            const { count: totalFaltas } = await sb
-                .from('presencas')
-                .select('*', { count: 'exact', head: true })
-                .eq('passaporte', passaporte)
-                .eq('status', 'falta');
-
-            // Atualiza os números na tela
-            if (totalPresencas !== null) {
-                document.getElementById('kpi-presencas').innerText = totalPresencas;
-            }
-            if (totalFaltas !== null) {
-                document.getElementById('kpi-faltas').innerText = totalFaltas;
+            if (error || !data || data.length === 0) {
+                container.innerHTML = '<p class="aviso-vazio">Nenhum membro encontrado.</p>';
+                return;
             }
 
-        } catch (error) {
-            console.error("Erro ao carregar presenças/faltas:", error);
+            let html = '';
+            data.forEach(m => {
+                const inicial = m.nome.charAt(0).toUpperCase();
+                const foto = m.foto_url ? m.foto_url.replace(/["']/g, '').trim() : null;
+                const avatarStyle = foto ? `background-image: url('${foto}'); background-size: cover; background-position: center;` : '';
+                html += `
+                    <div class="membro-card">
+                        <div class="membro-info">
+                            <div class="membro-avatar" style="${avatarStyle}">${foto ? '' : inicial}</div>
+                            <div class="membro-dados"><h4>${m.nome}</h4><p>Passaporte: ${m.passaporte} • ${m.cargo}</p></div>
+                        </div>
+                        <div class="status-online"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
         }
-    }
-                    </script>
+
+        async function verificarTicketRecente(passaporte) {
+            const { data, error } = await sb.from('tickets').select('*').eq('passaporte', passaporte).order('criado_em', { ascending: false }).limit(1).single();
+            if (error || !data) return;
+
+            const statusText = document.getElementById('status-ticket');
+            if (data.status === 'em_andamento' || data.lider_assumiu) {
+                statusText.innerText = "Líder assumiu o ticket!";
+                statusText.style.color = "#eab308";
+                document.getElementById('notif-ticket').style.display = 'block';
+            } else {
+                statusText.innerText = "Ticket aberto (aguardando)";
+                statusText.style.color = "var(--texto-mutado)";
+            }
+        }
+
+        // ==========================================
+        // AQUI COMEÇAM AS FUNÇÕES DA ENGRENAGEM
+        // ==========================================
+
+        // 1. Trocar a Foto de Perfil
+        async function alterarFoto() {
+            const novaUrl = prompt("Cole o link da nova foto (URL):");
+            if (!novaUrl) return; // Se cancelar, para aqui
+
+            // Atualiza no banco de dados
+            const { error } = await sb.from('membros').update({ foto_url: novaUrl }).eq('passaporte', membroLogado.passaporte);
+
+            if (!error) {
+                alert("Foto atualizada com sucesso!");
+                // Atualiza na tela sem precisar recarregar
+                const avatar = document.getElementById('avatar-inicial');
+                avatar.style.backgroundImage = `url('${novaUrl}')`;
+                avatar.innerText = '';
+            } else {
+                alert("Erro ao atualizar a foto. Verifique o link.");
+            }
+        }
+
+        // 2. Notificações no Navegador (Mágica do Push)
+        async function toggleNotificacoes(checkbox) {
+            if (checkbox.checked) {
+                const permissao = await Notification.requestPermission();
+                if (permissao === 'granted') {
+                    alert("Notificações ativadas com sucesso!");
+                    new Notification("Portal Itália", {
+                        body: "Você receberá alertas de avisos e tickets aqui.",
+                        icon: "https://cdn-icons-png.flaticon.com/512/281/281764.png"
+                    });
+                } else {
+                    alert("Você negou as notificações. Vá nas configurações do navegador para liberar.");
+                    checkbox.checked = false;
+                }
+            }
+        }
+
+        // 3. Desligar as Partículas (Economia de bateria)
+        function toggleParticulas(checkbox) {
+            const particulas = document.querySelectorAll('.particula');
+            particulas.forEach(p => {
+                if (checkbox.checked) {
+                    p.style.display = 'block'; // Liga de novo
+                } else {
+                    p.style.display = 'none'; // Esconde
+                }
+            });
+        }
+
+        // 4. Modo Performance (Desliga o blur, fica mais rápido)
+        function togglePerformance(checkbox) {
+            const elementosVidro = document.querySelectorAll('.cartao-perfil, .card-metrica, .card-acao, .painel-avisos, .menu-inferior');
+            if (checkbox.checked) {
+                // Desliga o blur e deixa o fundo opaco (Modo leve)
+                document.body.style.backgroundColor = '#0a0f0d';
+                elementosVidro.forEach(el => {
+                    el.style.backdropFilter = 'none';
+                    el.style.webkitBackdropFilter = 'none';
+                    el.style.backgroundColor = '#111613'; // Fundo sólido
+                });
+                // Desliga também as partículas automaticamente
+                document.querySelectorAll('.particula').forEach(p => p.style.display = 'none');
+                document.getElementById('switch-particulas').checked = false;
+            } else {
+                // Volta ao normal
+                elementosVidro.forEach(el => {
+                    el.style.backdropFilter = 'blur(20px)';
+                    el.style.webkitBackdropFilter = 'blur(20px)';
+                    el.style.backgroundColor = ''; // Volta pro padrão do CSS (vidro)
+                });
+                document.querySelectorAll('.particula').forEach(p => p.style.display = 'block');
+                document.getElementById('switch-particulas').checked = true;
+            }
+        }
+
+        // 5. Sair do Sistema
+        function sair() {
+            sessionStorage.removeItem('membro_logado');
+            window.location.href = 'login.html';
+        }
+    </script>
 </body>
 </html>
