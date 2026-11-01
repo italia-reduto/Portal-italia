@@ -28,7 +28,12 @@
             --texto-mutado: #9ca3af;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+            -webkit-tap-highlight-color: transparent; /* Tira a caixa azul de seleção no celular */
+            user-select: none; /* Impede de selecionar texto sem querer */
+        }
         html { background-color: #0a0f0d; }
 
         body {
@@ -43,6 +48,7 @@
             overflow-x: hidden;
         }
 
+        /* FUNDO ANIMADO */
         .fundo-degrade {
             position: fixed; inset: 0;
             background: radial-gradient(circle at 10% 10%, rgba(34, 197, 94, 0.1) 0%, transparent 40%),
@@ -73,6 +79,7 @@
             100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
 
+        /* CONTAINER PRINCIPAL */
         .container-principal {
             width: 100%;
             max-width: 800px;
@@ -85,6 +92,7 @@
             padding-bottom: 100px;
         }
 
+        /* CARTÃO DE PERFIL */
         .cartao-perfil {
             background: var(--vidro);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -95,12 +103,13 @@
             display: flex;
             align-items: center;
             gap: 20px;
-            position: relative;
+            position: relative; /* Necessário pra engrenagem */
         }
         .cartao-perfil::before {
             content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
             background: var(--verde); border-radius: 16px 0 0 16px;
         }
+
         .avatar {
             width: 80px; height: 80px; border-radius: 50%;
             border: 2px solid var(--verde); background: #000;
@@ -114,12 +123,26 @@
         .nome { font-family: 'Oswald', sans-serif; font-size: 26px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
         .cargo { font-size: 13px; color: var(--verde); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
         .passaporte { font-size: 12px; color: var(--texto-mutado); }
+        
         .xp-container { margin-top: 10px; }
         .xp-textos { display: flex; justify-content: space-between; font-size: 10px; color: var(--texto-mutado); margin-bottom: 5px; font-weight: 500;}
         .xp-textos span:last-child { color: var(--verde); font-weight: bold;}
         .xp-barra-bg { width: 100%; height: 4px; background: rgba(0,0,0,0.5); border-radius: 10px; overflow: hidden; }
         .xp-barra-preenchida { height: 100%; background: var(--verde); width: 0%; box-shadow: 0 0 10px var(--verde); transition: width 1s ease; }
 
+        /* BOTÃO DE CONFIGURAÇÕES (Dentro do Perfil) */
+        .btn-config {
+            position: absolute;
+            top: 15px; right: 15px;
+            width: 35px; height: 35px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--borda); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--texto-mutado); font-size: 16px;
+            cursor: pointer; z-index: 10; transition: 0.3s;
+        }
+        .btn-config:hover { color: var(--verde); border-color: var(--verde); transform: rotate(90deg); }
+                /* MÉTRICAS */
         .grid-metricas {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -141,7 +164,8 @@
         }
         .metrica-valor { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
         .metrica-sub { font-size: 10px; color: rgba(255,255,255,0.3); }
-                /* MURAL DE AVISOS */
+
+        /* MURAL DE AVISOS */
         .painel-avisos {
             background: var(--vidro);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -167,19 +191,6 @@
         .aviso-texto { font-size: 13px; color: #fff; line-height: 1.5; }
         .aviso-vazio { font-size: 13px; color: var(--texto-mutado); text-align: center; padding: 10px 0; }
 
-        /* BOTÃO DE CONFIGURAÇÕES */
-        .btn-config {
-            position: fixed; top: 20px; right: 20px;
-            width: 45px; height: 45px;
-            background: var(--vidro);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--borda); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--texto-mutado); font-size: 20px;
-            cursor: pointer; z-index: 100; transition: 0.3s;
-        }
-        .btn-config:hover { color: var(--verde); border-color: var(--verde); transform: rotate(90deg); }
-
         /* MENU INFERIOR FLUTUANTE */
         .menu-inferior {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
@@ -190,13 +201,23 @@
             padding: 10px 20px; width: 90%; max-width: 400px;
             z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
+        
+        /* CLASSE DO ITEM DO MENU */
         .item-menu {
             display: flex; flex-direction: column; align-items: center; gap: 5px;
             text-decoration: none; color: var(--texto-mutado); font-size: 10px;
             font-weight: 500; transition: 0.3s; padding: 5px 10px; border-radius: 10px;
+            cursor: pointer;
+            border: 1px solid transparent; /* Evita que o layout pule quando selecionado */
         }
         .item-menu i { font-size: 18px; }
-        .item-menu.ativo, .item-menu:hover { color: var(--verde); background: rgba(34, 197, 94, 0.1); }
+        
+        /* A MARCAÇÃO BONITA DO BOTÃO ATIVO */
+        .item-menu.ativo { 
+            color: var(--verde); 
+            background: rgba(34, 197, 94, 0.1); 
+            border: 1px solid rgba(34, 197, 94, 0.2); 
+        }
 
         /* NO CELULAR */
         @media (max-width: 600px) {
@@ -215,13 +236,11 @@
             
             .painel-avisos { padding: 15px; }
             .aviso-item { padding: 12px; }
-            
-            .btn-config { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 18px; }
         }
     </style>
 </head>
 <body>
-    <!-- FUNDO -->
+    <!-- FUNDO E PARTÍCULAS -->
     <div class="fundo-degrade"></div>
     <div class="grade-fundo"></div>
     <div class="particula p1"></div>
@@ -230,14 +249,14 @@
     <div class="particula p4"></div>
     <div class="particula p5"></div>
 
-    <!-- BOTÃO DE CONFIGURAÇÕES -->
-    <div class="btn-config" onclick="alert('Configurações em breve')">
-        <i class="fas fa-cog"></i>
-    </div>
-
     <main class="container-principal">
-        <!-- PERFIL -->
+        <!-- CARTÃO DE PERFIL -->
         <div class="cartao-perfil">
+            <!-- Engrenagem agora fica DENTRO do card e rola junto com a tela -->
+            <div class="btn-config" onclick="alert('Configurações em breve')">
+                <i class="fas fa-cog"></i>
+            </div>
+
             <div class="avatar" id="avatar-inicial">?</div>
             <div class="info-perfil">
                 <h1 class="nome" id="nome-membro">Carregando...</h1>
@@ -290,26 +309,36 @@
 
     <!-- MENU INFERIOR FLUTUANTE -->
     <nav class="menu-inferior">
-        <a href="#" class="item-menu ativo">
+        <!-- O onclick="mudarMenu(this)" é a mágica que deixa só um verde -->
+        <a href="#" class="item-menu ativo" onclick="mudarMenu(this); return false;">
             <i class="fas fa-home"></i>
             <span>Início</span>
         </a>
-        <a href="#" class="item-menu" onclick="alert('Aba Ponto em breve')">
+        <a href="#" class="item-menu" onclick="mudarMenu(this); return false;">
             <i class="fas fa-clock"></i>
             <span>Ponto</span>
         </a>
-        <a href="#" class="item-menu" onclick="alert('Aba Equipe em breve')">
+        <a href="#" class="item-menu" onclick="mudarMenu(this); return false;">
             <i class="fas fa-users"></i>
             <span>Equipe</span>
         </a>
-        <a href="#" class="item-menu" onclick="alert('Aba Perfil em breve')">
+        <a href="#" class="item-menu" onclick="mudarMenu(this); return false;">
             <i class="fas fa-id-card"></i>
             <span>Perfil</span>
         </a>
     </nav>
 
-    <!-- SCRIPT DE DADOS -->
+    <!-- SCRIPT -->
     <script>
+        // FUNÇÃO PRA DEIXAR SÓ UM BOTÃO VERDE POR VEZ
+        function mudarMenu(elementoClicado) {
+            // 1. Remove a classe 'ativo' de todos os botões
+            document.querySelectorAll('.item-menu').forEach(btn => btn.classList.remove('ativo'));
+            // 2. Adiciona a classe 'ativo' apenas no botão que foi clicado
+            elementoClicado.classList.add('ativo');
+        }
+
+        // CARREGAR DADOS DO BANCO
         window.addEventListener('DOMContentLoaded', async () => {
             const logado = sessionStorage.getItem('membro_logado');
             if (!logado) return window.location.href = 'login.html';
