@@ -18,7 +18,6 @@
     </script>
 
     <style>
-        /* FORÇA O NAVEGADOR A USAR MODO ESCURO (Ajuda na barra do Chrome) */
         :root {
             color-scheme: dark;
             --verde: #22c55e;
@@ -30,8 +29,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
-        html { background-color: #0a0f0d; } /* Fundo escuro pra barra do navegador */
+        html { background-color: #0a0f0d; }
 
         body {
             background-color: var(--fundo);
@@ -45,7 +43,6 @@
             overflow-x: hidden;
         }
 
-        /* FUNDO ANIMADO */
         .fundo-degrade {
             position: fixed; inset: 0;
             background: radial-gradient(circle at 10% 10%, rgba(34, 197, 94, 0.1) 0%, transparent 40%),
@@ -76,7 +73,6 @@
             100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
 
-        /* CONTAINER */
         .container-principal {
             width: 100%;
             max-width: 800px;
@@ -86,10 +82,9 @@
             position: relative;
             z-index: 10;
             margin-top: 20px;
-            padding-bottom: 40px;
+            padding-bottom: 100px;
         }
 
-        /* CARTÃO DE PERFIL */
         .cartao-perfil {
             background: var(--vidro);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -106,7 +101,6 @@
             content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
             background: var(--verde); border-radius: 16px 0 0 16px;
         }
-
         .avatar {
             width: 80px; height: 80px; border-radius: 50%;
             border: 2px solid var(--verde); background: #000;
@@ -116,19 +110,16 @@
             background-size: cover; background-position: center;
             flex-shrink: 0;
         }
-        
         .info-perfil { flex: 1; }
         .nome { font-family: 'Oswald', sans-serif; font-size: 26px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
         .cargo { font-size: 13px; color: var(--verde); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
         .passaporte { font-size: 12px; color: var(--texto-mutado); }
-        
         .xp-container { margin-top: 10px; }
         .xp-textos { display: flex; justify-content: space-between; font-size: 10px; color: var(--texto-mutado); margin-bottom: 5px; font-weight: 500;}
         .xp-textos span:last-child { color: var(--verde); font-weight: bold;}
         .xp-barra-bg { width: 100%; height: 4px; background: rgba(0,0,0,0.5); border-radius: 10px; overflow: hidden; }
         .xp-barra-preenchida { height: 100%; background: var(--verde); width: 0%; box-shadow: 0 0 10px var(--verde); transition: width 1s ease; }
 
-        /* MÉTRICAS */
         .grid-metricas {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -150,8 +141,7 @@
         }
         .metrica-valor { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
         .metrica-sub { font-size: 10px; color: rgba(255,255,255,0.3); }
-
-        /* PAINEL DE AVISOS */
+                /* MURAL DE AVISOS */
         .painel-avisos {
             background: var(--vidro);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -174,14 +164,42 @@
             padding: 15px; border-radius: 0 8px 8px 0; transition: 0.3s;
         }
         .aviso-item:hover { background: rgba(0,0,0,0.5); }
-        .aviso-titulo { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
-        .aviso-texto { font-size: 12px; color: var(--texto-mutado); line-height: 1.5; }
-        .aviso-data { font-size: 10px; color: rgba(255,255,255,0.2); margin-top: 8px; display: block; text-transform: uppercase; font-weight: 600;}
+        .aviso-texto { font-size: 13px; color: #fff; line-height: 1.5; }
         .aviso-vazio { font-size: 13px; color: var(--texto-mutado); text-align: center; padding: 10px 0; }
+
+        /* BOTÃO DE CONFIGURAÇÕES */
+        .btn-config {
+            position: fixed; top: 20px; right: 20px;
+            width: 45px; height: 45px;
+            background: var(--vidro);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--borda); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--texto-mutado); font-size: 20px;
+            cursor: pointer; z-index: 100; transition: 0.3s;
+        }
+        .btn-config:hover { color: var(--verde); border-color: var(--verde); transform: rotate(90deg); }
+
+        /* MENU INFERIOR FLUTUANTE */
+        .menu-inferior {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--vidro);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--borda); border-radius: 25px;
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 10px 20px; width: 90%; max-width: 400px;
+            z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .item-menu {
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            text-decoration: none; color: var(--texto-mutado); font-size: 10px;
+            font-weight: 500; transition: 0.3s; padding: 5px 10px; border-radius: 10px;
+        }
+        .item-menu i { font-size: 18px; }
+        .item-menu.ativo, .item-menu:hover { color: var(--verde); background: rgba(34, 197, 94, 0.1); }
 
         /* NO CELULAR */
         @media (max-width: 600px) {
-            .container-principal { gap: 10px; margin-top: 10px; }
             .cartao-perfil { padding: 15px; gap: 15px; border-radius: 12px; }
             .avatar { width: 60px; height: 60px; font-size: 24px; }
             .nome { font-size: 20px; }
@@ -197,59 +215,11 @@
             
             .painel-avisos { padding: 15px; }
             .aviso-item { padding: 12px; }
+            
+            .btn-config { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 18px; }
         }
-    /* MENU INFERIOR FLUTUANTE */
-.menu-inferior {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--vidro);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--borda);
-    border-radius: 25px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 10px 20px;
-    width: 90%;
-    max-width: 400px;
-    z-index: 100;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.item-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    text-decoration: none;
-    color: var(--texto-mutado);
-    font-size: 10px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    transition: 0.3s;
-    padding: 5px 10px;
-    border-radius: 10px;
-}
-
-.item-menu i { font-size: 18px; }
-
-/* Quando o menu está ativo ou passa o dedo */
-.item-menu.ativo, .item-menu:hover {
-    color: var(--verde);
-    background: rgba(34, 197, 94, 0.1);
-}
-
-/* Ajuste pro conteúdo não ficar escondido atrás do menu no celular */
-@media (max-width: 600px) {
-    .container-principal {
-        padding-bottom: 100px; 
-    }
-        }
-        </script>
-        <head>
+    </style>
+</head>
 <body>
     <!-- FUNDO -->
     <div class="fundo-degrade"></div>
@@ -259,6 +229,11 @@
     <div class="particula p3"></div>
     <div class="particula p4"></div>
     <div class="particula p5"></div>
+
+    <!-- BOTÃO DE CONFIGURAÇÕES -->
+    <div class="btn-config" onclick="alert('Configurações em breve')">
+        <i class="fas fa-cog"></i>
+    </div>
 
     <main class="container-principal">
         <!-- PERFIL -->
@@ -312,30 +287,28 @@
             </div>
         </div>
     </main>
-        </div>
-</main>
 
-<!-- COLE O MENU AQUI -->
-<nav class="menu-inferior">
-    <a href="#" class="item-menu ativo">
-        <i class="fas fa-home"></i>
-        <span>Início</span>
-    </a>
-    <a href="#" class="item-menu" onclick="alert('Aba Ponto em breve')">
-        <i class="fas fa-clock"></i>
-        <span>Ponto</span>
-    </a>
-    <a href="#" class="item-menu" onclick="alert('Aba Equipe em breve')">
-        <i class="fas fa-users"></i>
-        <span>Equipe</span>
-    </a>
-    <a href="#" class="item-menu" onclick="alert('Aba Perfil em breve')">
-        <i class="fas fa-id-card"></i>
-        <span>Perfil</span>
-    </a>
-</nav>
+    <!-- MENU INFERIOR FLUTUANTE -->
+    <nav class="menu-inferior">
+        <a href="#" class="item-menu ativo">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+        </a>
+        <a href="#" class="item-menu" onclick="alert('Aba Ponto em breve')">
+            <i class="fas fa-clock"></i>
+            <span>Ponto</span>
+        </a>
+        <a href="#" class="item-menu" onclick="alert('Aba Equipe em breve')">
+            <i class="fas fa-users"></i>
+            <span>Equipe</span>
+        </a>
+        <a href="#" class="item-menu" onclick="alert('Aba Perfil em breve')">
+            <i class="fas fa-id-card"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
 
-<script>
+    <!-- SCRIPT DE DADOS -->
     <script>
         window.addEventListener('DOMContentLoaded', async () => {
             const logado = sessionStorage.getItem('membro_logado');
@@ -373,48 +346,41 @@
                 }
             }
 
-            // Chama a função dos avisos
             carregarAvisos();
         });
 
         async function carregarAvisos() {
-    const container = document.getElementById('lista-avisos');
-    
-    // Puxa os 3 últimos avisos da tabela 'avisos'
-    const { data, error } = await sb.from('avisos')
-        .select('*')
-        .order('criado_em', { ascending: false })
-        .limit(3);
+            const container = document.getElementById('lista-avisos');
+            const { data, error } = await sb.from('avisos')
+                .select('*')
+                .order('criado_em', { ascending: false })
+                .limit(3);
 
-    if (error || !data || data.length === 0) {
-        return; // Se não tiver aviso, mantém o "Nenhum aviso recente"
-    }
+            if (error || !data || data.length === 0) return;
 
-    let html = '';
-    data.forEach(aviso => {
-        // Puxa os dados das colunas corretas (texto e autor)
-        const textoAviso = aviso.texto || 'Sem detalhes.';
-        const autorAviso = aviso.autor || 'Liderança';
-        
-        // Formata a data bonitinha (opcional)
-        let dataFormatada = 'Recentemente';
-        if (aviso.criado_em) {
-            const dataObj = new Date(aviso.criado_em);
-            dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
-        }
+            let html = '';
+            data.forEach(aviso => {
+                const textoAviso = aviso.texto || 'Sem detalhes.';
+                const autorAviso = aviso.autor || 'Liderança';
+                
+                let dataFormatada = 'Recentemente';
+                if (aviso.criado_em) {
+                    const dataObj = new Date(aviso.criado_em);
+                    dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+                }
 
-        html += `
-            <div class="aviso-item">
-                <div class="aviso-texto" style="font-size: 14px; color: #fff; margin-bottom: 8px;">${textoAviso}</div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px;">
-                    <span style="font-size: 11px; color: var(--verde); font-weight: 600;"><i class="fas fa-user-shield"></i> ${autorAviso}</span>
-                    <span class="aviso-data" style="margin-top: 0;">${dataFormatada}</span>
-                </div>
-            </div>
-        `;
-    });
-    
-    container.innerHTML = html;
+                html += `
+                    <div class="aviso-item">
+                        <div class="aviso-texto">${textoAviso}</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; margin-top: 8px;">
+                            <span style="font-size: 11px; color: var(--verde); font-weight: 600;"><i class="fas fa-user-shield"></i> ${autorAviso}</span>
+                            <span style="font-size: 10px; color: rgba(255,255,255,0.2); font-weight: 600; text-transform: uppercase;">${dataFormatada}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
         }
     </script>
 </body>
