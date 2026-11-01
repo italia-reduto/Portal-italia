@@ -262,7 +262,30 @@
             </div>
         </div>
     </main>
+        </div>
+</main>
 
+<!-- COLE O MENU AQUI -->
+<nav class="menu-inferior">
+    <a href="#" class="item-menu ativo">
+        <i class="fas fa-home"></i>
+        <span>Início</span>
+    </a>
+    <a href="#" class="item-menu" onclick="alert('Aba Ponto em breve')">
+        <i class="fas fa-clock"></i>
+        <span>Ponto</span>
+    </a>
+    <a href="#" class="item-menu" onclick="alert('Aba Equipe em breve')">
+        <i class="fas fa-users"></i>
+        <span>Equipe</span>
+    </a>
+    <a href="#" class="item-menu" onclick="alert('Aba Perfil em breve')">
+        <i class="fas fa-id-card"></i>
+        <span>Perfil</span>
+    </a>
+</nav>
+
+<script>
     <script>
         window.addEventListener('DOMContentLoaded', async () => {
             const logado = sessionStorage.getItem('membro_logado');
