@@ -37,14 +37,15 @@
         html { background-color: #0a0f0d; overflow-x: hidden; }
 
         body {
-            background-color: var(--fundo);
-            color: var(--texto);
-            min-height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
+    background-color: var(--fundo);
+    color: var(--texto);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
         }
 
         /* ANIMAÇÃO DE ENTRADA DA PÁGINA (PONTO 8) */
@@ -613,14 +614,25 @@
         }
 
         function abrirModalMembros() {
-            document.getElementById('modal-membros').classList.add('ativo');
-            carregarMembrosModal();
-        }
-        function fecharModalMembros() { document.getElementById('modal-membros').classList.remove('ativo'); }
+    document.getElementById('modal-membros').classList.add('ativo');
+    document.body.style.overflow = 'hidden';
+    carregarMembrosModal();
+}
 
-        function abrirModalConfig() { document.getElementById('modal-config').classList.add('ativo'); }
-        function fecharModalConfig() { document.getElementById('modal-config').classList.remove('ativo'); }
+function fecharModalMembros() {
+    document.getElementById('modal-membros').classList.remove('ativo');
+    document.body.style.overflow = 'auto';
+}
 
+function abrirModalConfig() {
+    document.getElementById('modal-config').classList.add('ativo');
+    document.body.style.overflow = 'hidden';
+}
+
+function fecharModalConfig() {
+    document.getElementById('modal-config').classList.remove('ativo');
+    document.body.style.overflow = 'auto';
+}
         function abrirModalTicket() {
             // Se a gente for criar a tela de tickets depois, ele abre aqui. Por enquanto, só avisa.
             customAlert("A tela de tickets será construída no próximo passo!");
